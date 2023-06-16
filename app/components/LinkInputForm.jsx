@@ -15,8 +15,6 @@ function LinkInputForm({ links, setLinks, deletesArr, setDeletes }) {
       setLinks([...links, ""]);
     }
   };
-  console.log(deletesArr)
-  console.log(links)
   // Function to remove an input field
   const handleRemoveLink = (index) => {
     const newLinks = [...links];

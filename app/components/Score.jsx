@@ -1,7 +1,7 @@
 'use client'
 // import axios from "axios";
 import api from "../api/LocalApi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 const Score = ({ type, id, score: initialScore }) => {
@@ -74,6 +74,10 @@ const Score = ({ type, id, score: initialScore }) => {
       console.error(error);
     }
   };
+
+  useEffect(()=>{
+    fetchScore();
+  }, [id])
 
   return (
     <>

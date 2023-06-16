@@ -3,19 +3,22 @@ import React, { useEffect } from 'react'
 import { useState } from 'react';
 import LinkInputForm from './LinkInputForm';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
-const CreateComponent = ({type, nodeID, summaryID, commentID, pathID}) => {
+const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSummaries}) => {
     const [summary, setSummary] = useState("");
     const [links, setlinks] = useState([]);
     const [deletesArr, setDeletes] = useState([]);
     const [content, setContent] = useState("");
     const [linkCount, setLinkCount] = useState(1);
+    const router = useRouter();
 
     // const router = useRouter();
     async function onStartGetSummary(){
       try{
         const token = localStorage.getItem("token");
         if(type==='summary'){
+          
           const response = await axios.get('http://localhost:8000/getSummaryFromUserAndNode', {
                 params: {
                     nodeID: nodeID
@@ -25,23 +28,27 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID}) => {
                 Authorization: `Bearer ${token}`,
                 },
             });
+            if(response.status ==200){
             setSummary(response.data.Summary.content);
             setlinks(response.data.Summary.links)
+          }
         }
       }
       catch (error) {
-        console.error(error);
+        if(error.response.status == 401){
+          router.push("/login");
+        }
       }
 
     }
 
     useEffect(()=>{
-      onStartGetSummary();
-      console.log(deletesArr)
+      if(type=='summary'){
+        onStartGetSummary();
+      }
     }, [])
   
     async function onSubmitCreateSummary() {
-      console.log("here!!!")
         try {
           
           const token = localStorage.getItem("token");
@@ -51,7 +58,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID}) => {
               content: summary,
               links,
               nodeID,
-              deletes: deletesArr
+              deletes: deletesArr 
             },
             {
               headers: {
@@ -61,13 +68,14 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID}) => {
             }
           );
           console.log(response.data);
+          fetchSummaries();
         //   router.push("/source/" + response.data.nodeID);
         } catch (error) {
           console.error("Error during create source:", error);
         }
     }
 
-    async function onSubmitCreateComment() {
+    async function onSubmitCreateCommentOnPath() {
       try {
         
         const token = localStorage.getItem("token");
@@ -76,7 +84,8 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID}) => {
           {
             content,
             links,
-            nodeID
+            nodeID,
+            pathID
           },
           {
             headers: {
@@ -91,6 +100,32 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID}) => {
         console.error("Error during create source:", error);
       }
   }
+
+  async function onSubmitCreateSubComment() {
+    try {
+      
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:8000/createComment",
+        {
+          content,
+          links,
+          nodeID,
+          underCommentID: commentID
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+    //   router.push("/source/" + response.data.nodeID);
+    } catch (error) {
+      console.error("Error during create source:", error);
+    }
+}
 
   async function onSubmitCreatePath() {
     try {
@@ -118,7 +153,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID}) => {
 
 
 const isSummary = type === 'summary';
-const isComment = type === 'comment';
+const isComment = type === 'commentOnPath' || type==='commentOnComment';
 const isPath = type === 'path';
 
 
@@ -128,12 +163,14 @@ const isPath = type === 'path';
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            console.log("0000", type)
             if (type==='summary'){
               onSubmitCreateSummary();
             }
-            else if(type ==='comment'){
-              onSubmitCreateComment();
+            else if(type ==='commentOnPath'){
+              onSubmitCreateCommentOnPath();
+            }
+            else if(type ==='commentOnComment'){
+              onSubmitCreateSubComment();
             }
             else if(type === 'path'){
               onSubmitCreatePath();
@@ -169,6 +206,7 @@ const isPath = type === 'path';
                 required
                 onChange={(e) => setContent(e.target.value)}
               />
+              <LinkInputForm links={links} setLinks={setlinks} deletesArr={deletesArr} setDeletes={setDeletes}/>
           <br /></>}
 
           {isPath &&
@@ -182,10 +220,9 @@ const isPath = type === 'path';
             required
             onChange={(e) => setSummary(e.target.value)}
           />
-          <LinkInputForm links={links} setLinks={setlinks}/>
           <br /></>
           }
-          <button type="submit">Create {type}</button>
+          <button type="submit">Submit</button>
         </form>
       </div>
   )

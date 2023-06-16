@@ -37,6 +37,10 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
   const [timeStamp, setTimeStamp] = useState(current_time);
   const [date, setDate] = useState(current_date);
   const [searchText, setSearchText] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [errorOccured, setErrorOccured] = useState(false)
+  const [hasMoreData, setHasMoreData] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleCheckboxChange = (e) => {
     setIndex({ ...index, [e.target.name]: e.target.checked ? 1 : 0 });
@@ -75,6 +79,8 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
     try {
         //change it to filter_sort_tables later to apply the filter
         if(isComment){
+            setLoading(true);
+            setErrorOccured(false)
             const response = await axios.get('http://localhost:8000/getPathsSortBoth', {
                 params: {
                     filterByCommentID: 1,
@@ -87,6 +93,13 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
                 'Content-Type': 'application/json'
                 },
             });
+            if(response.status == 200){
+                setLoading(false)
+                setErrorOccured(false)
+            }
+            else{
+                setErrorOccured(true)
+            }
             if (offset === 0) 
             {
                 setData(response.data.Paths);
@@ -95,9 +108,14 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
             {
                 setData((data) => [...data, ...response.data.Paths]);
             }
+            if (response.data.Paths.length < 10) {
+                setHasMoreData(false);
+            }
             return response.data;
         }
         else{
+            setLoading(true);
+            setErrorOccured(false);
             const response = await axios.get('http://localhost:8000/getPathsSortBoth', {
                 params: {
                     filterBySummaryID: 1,
@@ -110,6 +128,13 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
                 'Content-Type': 'application/json'
                 },
             });
+            if(response.status == 200){
+                setLoading(false)
+                setErrorOccured(false)
+            }
+            else{
+                setErrorOccured(true)
+            }
             if (offset === 0) 
             {
                 setData(response.data.Paths);
@@ -118,16 +143,121 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
             {
                 setData((data) => [...data, ...response.data.Paths]);
             }
+            if (response.data.Paths.length < 10) {
+                setHasMoreData(false);
+            }
             return response.data;
         }
+        
     } catch (error) {
+      console.log("error")
       console.error(error);
+      setErrorOccured(true);  // Set errorOccurred to true in case of error
+      setLoading(false); 
     }
   };
 
+  const refreshContent = async() => {
+    try {
+      setCurrentIndex(0)
+      let refreshDataLimit = data.length
+      if(refreshDataLimit<10)
+      {
+        refreshDataLimit = 10;
+      }
+      //change it to filter_sort_tables later to apply the filter
+      if(isComment){
+          setLoading(true);
+          setErrorOccured(false)
+          const response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+              params: {
+                  filterByCommentID: 1,
+                  commentID,
+                  offset: offset,
+                  limit: refreshDataLimit,
+                  nodeID,
+              },
+              headers: {
+              'Content-Type': 'application/json'
+              },
+          });
+          if(response.status == 200){
+              setLoading(false)
+              setErrorOccured(false)
+          }
+          if(index>response.data.Paths.length){
+            setCurrentIndex(0)
+          }
+          else{
+              setErrorOccured(true)
+          }
+          if (offset === 0) 
+          {
+              setData(response.data.Paths);
+          } 
+          else 
+          {
+              setData((data) => [...data, ...response.data.Paths]);
+          }
+          if (response.data.Paths.length < 10) {
+              setHasMoreData(false);
+          }
+          return response.data;
+      }
+      else{
+          setLoading(true);
+          setErrorOccured(false);
+          const response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+              params: {
+                  filterBySummaryID: 1,
+                  summaryID,
+                  offset: offset,
+                  limit: refreshDataLimit,
+                  nodeID
+              },
+              headers: {
+              'Content-Type': 'application/json'
+              },
+          });
+          if(response.status == 200){
+              setLoading(false)
+              setErrorOccured(false)
+          }
+          if(index>response.data.Paths.length){
+            setCurrentIndex(0)
+          }
+          if (response.data.Paths.length < 10) {
+              setHasMoreData(false);
+          }
+          else{
+              setErrorOccured(true)
+          }
+          if (offset === 0) 
+          {
+              setData(response.data.Paths);
+          } 
+          else 
+          {
+              setData((data) => [...data, ...response.data.Paths]);
+          }
+          return response.data;
+      }
+    }
+    catch (error) {
+      console.log("error")
+      console.error(error);
+      setErrorOccured(true);  // Set errorOccurred to true in case of error
+      setLoading(false); 
+    }
+  }
+
   useEffect(() => {
     fetchPaths(offset, limit);
-  }, [summaryID]);
+  }, [summaryID, commentID]);
+
+  const handleRefresh = () => {
+    refreshContent();
+  };
 
   return (
     <>
@@ -163,9 +293,12 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
         />
         <button onClick={handleSubmit}>Submit</button>
       </div>
+      <button onClick={handleRefresh}>Refresh Paths</button>
       </div>
       <div>
-      {data && data.length > 0 && <><PathCarousel data={data} fetchPaths={fetchPaths} nodeID={nodeID}/></>}
+      {/* {data && data.length > 0 && <><PathCarousel data={data} fetchPaths={fetchPaths} nodeID={nodeID}/></>} */}
+      {data && data.length > 0 &&<><PathCarousel data={data} fetchPaths={fetchPaths} nodeID={nodeID} loading={loading} errorOccurred={errorOccured} hasMoreData={hasMoreData} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex}/></>}
+      
     </div>
     {/* <CreateComponent nodeID={nodeID} type='summary'/> */}
     </>

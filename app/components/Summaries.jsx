@@ -150,13 +150,96 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
     }
   };
 
+  const refreshContent = async ()=>{
+      try{
+        if(isPath){
+          let refreshDataLimit = data.length
+          if(refreshDataLimit<10){
+            refreshDataLimit = 10;
+          }
+          const response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
+                  params: {
+                      index1: index.index1,
+                      index2: index.index2,
+                      index3: index.index3,
+                      index4: index.index4,
+                      index5: index.index5,
+                      before_after: before === 1 ? "before" : "after",
+                      score_desc: scoreDesc,
+                      summary_search_string: searchText,
+                      offset: 0,
+                      limit: refreshDataLimit,
+                      nodeID: nodeID,
+                      filterByNodeID: 1,
+                      filterByPathID: 1,
+                      pathID
+                  },
+                  headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                  },
+              });
+              if (offset === 0) 
+              {
+                  setData(response.data.Source);
+              } 
+              else 
+              {
+                  setData((data) => [...data, ...response.data.Source]);
+              }
+              return response.data;
+          }
+          else{
+            let refreshDataLimit = data.length
+            if(refreshDataLimit<10){
+              refreshDataLimit = 10;
+            }
+            const response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
+                params: {
+                    index1: index.index1,
+                    index2: index.index2,
+                    index3: index.index3,
+                    index4: index.index4,
+                    index5: index.index5,
+                    before_after: before === 1 ? "before" : "after",
+                    score_desc: scoreDesc,
+                    summary_search_string: searchText,
+                    offset: 0,
+                    limit: refreshDataLimit,
+                    nodeID: nodeID,
+                    filterByNodeID: 1,
+                },
+                headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+                },
+            });
+            if (offset === 0) 
+            {
+                setData(response.data.Source);
+            } 
+            else 
+            {
+                setData((data) => [...data, ...response.data.Source]);
+            }
+            return response.data;
+          }
+      }
+      catch (error) {
+        console.error(error);
+      }
+  }
+
   useEffect(() => {
-    console.log("here")
     fetchSummaries(offset, limit);
   }, []);
 
   const handleToggleCreateSummary = () => {
     setEnableCreateSummarySection(enableCreateSummarySection ===1? 0 : 1);
+  };
+
+  const handleRefresh = () => {
+    refreshContent();
   };
 
   return (
@@ -193,7 +276,9 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
         <button onClick={handleSubmit}>Submit</button>
       </div>
       <button onClick={handleToggleCreateSummary }>Create/Edit Summary</button>
-      {enableCreateSummarySection===1 && <CreateComponent nodeID={nodeID} type='summary'/>}
+      <button onClick={handleRefresh}>Refresh Summaries</button>
+      {enableCreateSummarySection===1 && <CreateComponent nodeID={nodeID} type='summary' fetchSummaries={fetchSummaries}/>}
+      
       <div>
       {data && <SummaryCarousel data={data} fetchSummaries={fetchSummaries} nodeID={nodeID} userID={userID}/>}
     </div>

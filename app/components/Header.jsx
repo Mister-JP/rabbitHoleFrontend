@@ -8,7 +8,7 @@ const Header = () => {
         </h1>
         <div>
             <div>
-                <Link href="/">Home</Link>
+                <Link href="/createSource">Go to Source</Link>
             </div>
         </div>
         <div>

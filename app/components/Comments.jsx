@@ -37,6 +37,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
   const [timeStamp, setTimeStamp] = useState(current_time);
   const [date, setDate] = useState(current_date);
   const [searchText, setSearchText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleCheckboxChange = (e) => {
     setIndex({ ...index, [e.target.name]: e.target.checked ? 1 : 0 });
@@ -73,6 +74,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
 
   const fetchComments = async (offset = 0, limit = 10) => {
     try {
+      setCurrentIndex(0)
       //change it to filter_sort_tables later to apply the filter
       if(isPath){
         const response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
@@ -122,10 +124,72 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
       console.error(error);
     }
   };
+  
+  const refreshContent = async () => {
+  try {
+    setCurrentIndex(0)
+    let refreshDataLimit = data.length
+      if(refreshDataLimit<10)
+      {
+        refreshDataLimit = 10;
+      }
+    //change it to filter_sort_tables later to apply the filter
+    if(isPath){
+      const response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          params: {
+              filterByPathID: 1,
+              pathID,
+              offset: 0,
+              limit: refreshDataLimit
+          },
+          headers: {
+          'Content-Type': 'application/json'
+          },
+      });
+      if (offset === 0) 
+      {
+          setData(response.data.Comments);
+      } 
+      else 
+      {
+          setData((data) => [...data, ...response.data.Comments]);
+      }
+      return response.data;
+    }
+    else{
+      const response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          params: {
+              filterByCommentID: 1,
+              commentID,
+              offset: 0,
+              limit: refreshDataLimit
+          },
+          headers: {
+          'Content-Type': 'application/json'
+          },
+      });
+      if (offset === 0) 
+      {
+          setData(response.data.Comments);
+      } 
+      else 
+      {
+          setData((data) => [...data, ...response.data.Comments]);
+      }
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
 
   useEffect(() => {
     fetchComments(offset, limit);
   }, [pathID, commentID]);
+
+  const handleRefresh = () => {
+    refreshContent();
+  };
 
   return (
     <>
@@ -161,9 +225,11 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
         />
         <button onClick={handleSubmit}>Submit</button>
       </div>
+      <button onClick={handleRefresh}>Refresh Comments</button>
       </div>
       <div>
-       <CommentCarousel nodeID={nodeID} data={data} fetchComments={fetchComments}/>
+      
+       <CommentCarousel nodeID={nodeID} data={data} fetchComments={fetchComments} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex}/>
     </div>
     </>
   );
