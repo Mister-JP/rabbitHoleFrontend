@@ -113,7 +113,7 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
                     filterByNodeID: 1,
                     filterByPathID: 1,
                     pathID,
-                    sortOrderScoreTime: 0,
+                    sortOrderScoreTime: sortOrder,
                     summary_search_string: searchText
                 },
                 headers: {
@@ -143,7 +143,7 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
                   },
               });
           }
-          else{//sortenabled
+          else{//sortscoreenabled
             response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
                 params: {
                     indices: indices,
@@ -171,7 +171,7 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
           }
           return response.data;
       }
-      else{//unders summary
+      else{//unders node
         console.log("here0")
           if(sortOrderEnabled){
             console.log("both")
@@ -186,7 +186,7 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
                   limit: limit,
                   nodeID: nodeID,
                   filterByNodeID: 1,
-                  sortOrderScoreTime: 0,
+                  sortOrderScoreTime: sortOrder,
                   summary_search_string: searchText
               },
               headers: {
@@ -274,7 +274,7 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
                   filterByNodeID: 1,
                   filterByPathID: 1,
                   pathID,
-                  sortOrderScoreTime: 0,
+                  sortOrderScoreTime: sortOrder,
                   summary_search_string: searchText
               },
               headers: {
@@ -356,7 +356,7 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
                     limit: refreshDataLimit,
                     nodeID: nodeID,
                     filterByNodeID: 1,
-                    sortOrderScoreTime: 0,
+                    sortOrderScoreTime: sortOrder,
                     summary_search_string: searchText
                 },
                 headers: {
