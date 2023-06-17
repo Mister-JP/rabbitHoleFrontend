@@ -105,7 +105,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
                     indices: indices,
                     descending: scoreDesc,
                     before: before,
-                    timestamp: `${date} ${timeStamp}`,
                     newest,
                     offset: offset,
                     limit: limit,
@@ -126,7 +125,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
               response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
                   params: {
                       before: before,
-                      timestamp: `${date} ${timeStamp}`,
                       newest,
                       offset: offset,
                       limit: limit,
@@ -180,7 +178,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
                   indices: indices,
                   descending: scoreDesc,
                   before: before,
-                  timestamp: `${date} ${timeStamp}`,
                   newest,
                   offset: offset,
                   limit: limit,
@@ -200,7 +197,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
             response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
                 params: {
                     before: before,
-                    timestamp: `${date} ${timeStamp}`,
                     newest,
                     offset: offset,
                     limit: limit,

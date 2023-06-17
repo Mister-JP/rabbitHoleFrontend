@@ -18,7 +18,7 @@ const Header = () => {
         </div>
         <div>
             <div>
-            <Link href="/about/team">Team</Link>
+            <Link href="/home">Home</Link>
             </div>
         </div>
         {/* <div>

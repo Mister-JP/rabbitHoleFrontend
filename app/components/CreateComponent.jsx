@@ -47,6 +47,10 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
         onStartGetSummary();
       }
     }, [])
+
+    const sleep = (milliseconds) => {
+      return new Promise((resolve) => setTimeout(resolve, milliseconds));
+    };
   
     async function onSubmitCreateSummary() {
         try {
@@ -68,6 +72,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
             }
           );
           console.log(response.data);
+          await sleep(2000);
           fetchSummaries();
         //   router.push("/source/" + response.data.nodeID);
         } catch (error) {
