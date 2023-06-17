@@ -28,7 +28,12 @@ const Header = () => {
         </div> */}
         <div>
             <div>
-                <Link href="/code/repos">repos</Link>
+                <Link href="/login">Login</Link>
+            </div>
+        </div>
+        <div>
+            <div>
+                <Link href="/register">Register</Link>
             </div>
         </div>
     </header>
