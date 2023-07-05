@@ -14,13 +14,16 @@ const RefCardsMD = ({reference, nodeID}) => {
     const [nodeScore, setNodeScore] = useState(0);
     const [totalScore, setTotalScore] = useState(null);
     const router = useRouter();
+    const [pathID, setPathID] = useState('');
     // console.log(reference)
+    // console.log(nodeID)
 
     useEffect(()=>{
         const fetchData = async () => {
             try{
                 await fetchMovieDetails();
                 await fetchUserNodescore();
+                await fetchPathID();
             }
             catch{
                 console.log("Error occured!")
@@ -40,6 +43,21 @@ const RefCardsMD = ({reference, nodeID}) => {
           } catch (error) {
             console.error(error);
           }
+    }
+
+    const fetchPathID = async () => {
+        try{
+            const pathID = await api.get('/getPathID', {
+                params: { startNodeID: nodeID, endNodeID: reference.id },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            setPathID(pathID.data.pathID);
+        }
+        catch(e){
+            console.error(e);
+        }
     }
 
     const fetchUserNodescore = async() =>{
@@ -168,7 +186,8 @@ const RefCardsMD = ({reference, nodeID}) => {
             <div class="border-r h-6 border-gray-200"></div>
             <div className='flex flex-row items-center'>
             <img src='/svgs/commentSVG.svg' className='m-1 w-6'/>
-            <div class="text-gray-600 text-sm">Comments</div>
+            {/* <div class="text-gray-600 text-sm">Comments</div> */}
+            <Link href={`/comments/${pathID}`} className="text-gray-600 text-sm">Comments</Link>
             </div>
             <div class="border-r h-6 border-gray-200"></div>
             <div className='flex flex-row items-center'>
