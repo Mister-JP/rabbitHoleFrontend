@@ -81,24 +81,23 @@ const Score = ({ type, id, score: initialScore }) => {
 
   return (
     <>
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <button onClick={() => scoreRequest(2)}>++</button>
-      <button onClick={() => scoreRequest(1)}>+</button>
-      <button onClick={() => scoreRequest(0)}>o</button>
-      <button onClick={() => scoreRequest(-1)}>-</button>
-      <button onClick={() => scoreRequest(-2)}>--</button>
+    <div className="flex items-center justify-center space-x-4">
+      <button onClick={() => scoreRequest(2)} className="bg-gradient-to-r from-green-500 to-green-300 hover:from-red-600 hover:to-green-600 text-white font-bold py-2 px-4 rounded-full">++</button>
+      <button onClick={() => scoreRequest(1)} className="bg-gradient-to-r from-green-300 to-yellow-500 hover:from-yellow-600 hover:to-green-600 text-white font-bold py-2 px-4 rounded-full">+</button>
+      <button onClick={() => scoreRequest(0)} className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-full">o</button>
+      <button onClick={() => scoreRequest(-1)} className="bg-gradient-to-r from-yellow-500 to-red-300 hover:from-yellow-600 hover:to-red-600 text-white font-bold py-2 px-4 rounded-full">-</button>
+      <button onClick={() => scoreRequest(-2)} className="bg-gradient-to-r from-red-300 to-red-500 hover:from-green-600 hover:to-red-600 text-white font-bold py-2 px-4 rounded-full">--</button>
+</div>
+{score &&
+     <div className="flex justify-around mt-5">
+        <div className="bg-gradient-to-r from-purple-200 to-pink-200 text-Black rounded-lg p-2"> {score[0]} lvl-1 </div>
+        <div className="bg-gradient-to-r from-pink-200 to-purple-200 text-Black rounded-lg p-2"> {score[1]} lvl-2 </div>
+        <div className="bg-gradient-to-r from-purple-200 to-pink-200 text-Black rounded-lg p-2"> {score[2]} lvl-3 </div>
+        <div className="bg-gradient-to-r from-pink-200 to-purple-200 text-Black rounded-lg p-2"> {score[3]} lvl-4 </div>
+        <div className="bg-gradient-to-r from-purple-200 to-pink-200 text-Black rounded-lg p-2"> {score[4]} lvl-5 </div>
     </div>
-    {score &&
-     <p>
-        {score[0]} lvl-1, {score[1]} lvl-2, {score[2]} lvl-3, {score[3]} lvl-4, {score[4]} lvl-5
-    </p>
-    }
+}
+
     </>
   );
 };

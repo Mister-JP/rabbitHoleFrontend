@@ -40,6 +40,7 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
   const [enableCreateSummarySection, setEnableCreateSummarySection] = useState(false);
   const [sortEnabled, setSortEnabled] = useState(true);
   const [timeEnabled, setTimeEnabled] = useState(true);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   const toggleSort = () => setSortEnabled(!sortEnabled);
   const toggleTime = () => setTimeEnabled(!timeEnabled);
@@ -76,10 +77,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
 
   const handleSortOrderScoreTimeToggle = () => {
     setSortorder(sortOrder === 1 ? 0 : 1);
-  };
-
-  const handleSubmit = () => {
-    console.log("clicked");
   };
 
   let token;
@@ -170,9 +167,7 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
           return response.data;
       }
       else{//unders node
-        console.log("here0")
           if(sortOrderEnabled){
-            console.log("both")
             response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
               params: {
                   indices: indices,
@@ -193,7 +188,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
           });
           }
           else if(timeEnabled){
-            console.log("time")
             response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
                 params: {
                     before: before,
@@ -212,7 +206,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
             });
         }
         else{//sortenabled
-          console.log("here1")
           response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
               params: {
                   indices: indices,
@@ -280,7 +273,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
           });
           }
           else if(timeEnabled){
-            console.log("time")
             response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
                 params: {
                     before: before,
@@ -302,7 +294,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
             });
           }
           else{//sortenabled
-            console.log("here1")
             response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
                 params: {
                     indices: indices,
@@ -362,7 +353,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
             });
             }
             else if(timeEnabled){
-              console.log("time")
               response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
                   params: {
                       before: before,
@@ -382,7 +372,6 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
               });
             }
             else{//sortenabled
-              console.log("here1")
               response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
                   params: {
                       indices: indices,
@@ -429,81 +418,199 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
   };
 
   return (
-    <div style={{ border: "1px solid black", padding: "10px" }}>
-      <div>
-        <label>Filter by Score</label>
-        <input type="checkbox" checked={sortEnabled} onChange={toggleSort} />
-      </div>
-      <div className={`sort-controls ${sortEnabled ? "enabled" : "disabled"}`}>
-        {["index1", "index2", "index3", "index4", "index5"].map((indexKey) => (
-          <label key={indexKey}>
+    <div className="bg-white border border-black p-10 m-10 rounded-lg shadow-md">
+      <div className="flex flex-col space-y-6">
+        {/* Search Bar */}
+        <div className="flex items-center space-x-4 mb-4">
+          <input
+            type="text"
+            placeholder="Filter by Keyword..."
+            value={searchText}
+            onChange={handleSearchChange}
+            className="border-2 border-blue-600 rounded px-2 py-1 flex-grow"
+          />
+        </div>
+
+        {/* Primary Filters */}
+        <div className="space-y-4">
+          {/* Filter by Score */}
+          <div className="flex items-center space-x-4 mb-4">
+            <label className="font-semibold text-blue-600">Sort by Score</label>
             <input
               type="checkbox"
-              name={indexKey}
-              checked={index[indexKey] === 1}
-              onChange={handleCheckboxChange}
+              checked={sortEnabled}
+              onChange={toggleSort}
+              className="border-2 border-blue-600 rounded h-5 w-5"
             />
-            {indexKey}
-          </label>
-        ))}
+          </div>
 
-        <button onClick={handleScoreDescToggle}>
-          {scoreDesc === 1 ? "Desc" : "Asc"}
-        </button>
-      </div>
-      <div>
-        <label>Filter by Time</label>
-        <input type="checkbox" checked={timeEnabled} onChange={toggleTime} />
-      </div>
-      <div className={`time-controls ${timeEnabled ? "enabled" : "disabled"}`}>
-        <button onClick={handleBeforeAfterToggle}>
-          {before === 1 ? "before" : "after"}
-        </button>
-        <input type="date" value={date} onChange={handleDateChange} />
-        <input type="time" value={timeStamp} onChange={handleTimeChange} />
-        <button onClick={handleNewestToggle}>
-          {newest === 1 ? "New to Old" : "Old to New"}
-        </button>
-      </div>
+          {/* Sort Order */}
+          <div
+            className={`mb-4 ${sortEnabled ? "text-black" : "text-gray-300"}`}
+          >
+            <button
+              onClick={handleScoreDescToggle}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200"
+            >
+              {scoreDesc === 1 ? "Descending" : "Ascending"}
+            </button>
+          </div>
 
-      <div
-        className={`sort-order-controls ${
-          sortOrderEnabled ? "enabled" : "disabled"
-        }`}
-      >
-        <p>Primary Sort</p>
-        <label>
-          <input
-            type="radio"
-            value="Score"
-            checked={sortOrder === 1}
-            onChange={handleSortOrderScoreTimeToggle}
-          />
-          Score
+          {/* Filter by Time */}
+          <div className="flex items-center space-x-4 mb-4">
+            <label className="font-semibold text-blue-600">Sort by Time</label>
+            <input
+              type="checkbox"
+              checked={timeEnabled}
+              onChange={toggleTime}
+              className="border-2 border-blue-600 rounded h-5 w-5"
+            />
+          </div>
+
+          {/* Sort Order (Time) */}
+          <div
+            className={`mb-4 ${timeEnabled ? "text-black" : "text-gray-300"}`}
+          >
+            <button
+              onClick={handleNewestToggle}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200"
+            >
+              {newest === 1 ? "Newest First" : "Oldest First"}
+            </button>
+          </div>
+        </div>
+        <label
+          for="Toggle3"
+          className="inline-flex items-center p-2 rounded-md cursor-pointer dark:text-gray-800"
+        >
+          <input id="Toggle3" type="checkbox" className="hidden peer" />
+          <span className="px-4 py-2 rounded-l-md dark:bg-violet-400 peer-checked:dark:bg-gray-300">
+            Monthly
+          </span>
+          <span className="px-4 py-2 rounded-r-md dark:bg-gray-300 peer-checked:dark:bg-violet-400">
+            Annually
+          </span>
         </label>
-        <label>
-          <input
-            type="radio"
-            value="Time"
-            checked={sortOrder === 0}
-            onChange={handleSortOrderScoreTimeToggle}
-          />
-          Time
-        </label>
+
+        {/* Advanced Filters Toggle */}
+        <button
+          onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200"
+        >
+          {showAdvancedFilters
+            ? "Hide Advanced Filters"
+            : "Show Advanced Filters"}
+        </button>
+
+        {/* Advanced Filters */}
+        {showAdvancedFilters && (
+          <div className="space-y-4">
+            {/* Counting User Levels */}
+            <div
+              className={`space-y-2 mb-4 ${
+                sortEnabled ? "text-black" : "text-gray-300"
+              }`}
+            >
+              <p className="font-semibold text-blue-600">
+                Include User Levels in Score
+              </p>
+              {["index1", "index2", "index3", "index4", "index5"].map(
+                (indexKey) => (
+                  <label
+                    key={indexKey}
+                    className="inline-flex items-center space-x-2"
+                  >
+                    <input
+                      type="checkbox"
+                      name={indexKey}
+                      checked={index[indexKey] === 1}
+                      onChange={handleCheckboxChange}
+                      className="border-2 border-blue-600 rounded h-5 w-5"
+                    />
+                    <span>{indexKey}</span>
+                  </label>
+                )
+              )}
+            </div>
+
+            {/* Detailed Time Filtering */}
+            <div
+              className={`space-y-2 mb-4 ${
+                timeEnabled ? "text-black" : "text-gray-300"
+              }`}
+            >
+              <p className="font-semibold text-blue-600">
+                Detailed Time Filters
+              </p>
+              <button
+                onClick={handleBeforeAfterToggle}
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200"
+              >
+                {before === 1 ? "Before" : "After"}
+              </button>
+              <input
+                type="date"
+                value={date}
+                onChange={handleDateChange}
+                className="border-2 border-blue-600 rounded px-2 py-1"
+              />
+              <input
+                type="time"
+                value={timeStamp}
+                onChange={handleTimeChange}
+                className="border-2 border-blue-600 rounded px-2 py-1"
+              />
+            </div>
+
+            {/* Sort Preference */}
+            <div
+              className={`space-y-2 mb-4 ${
+                sortOrderEnabled ? "text-black" : "text-gray-300"
+              }`}
+            >
+              <p className="font-semibold text-blue-600">Primary Sort</p>
+              <div className="space-y-2">
+                <label className="inline-flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    value="Score"
+                    checked={sortOrder === 1}
+                    onChange={handleSortOrderScoreTimeToggle}
+                    className="h-5 w-5"
+                  />
+                  <span>Score</span>
+                </label>
+                <label className="inline-flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    value="Time"
+                    checked={sortOrder === 0}
+                    onChange={handleSortOrderScoreTimeToggle}
+                    className="h-5 w-5"
+                  />
+                  <span>Time</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      <div className="search-controls">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchText}
-          onChange={handleSearchChange}
-        />
-        <button onClick={handleSubmit}>Submit</button>
+      <div className="flex space-x-4 mt-5 mb-4">
+        <button
+          onClick={handleToggleCreateSummary}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200"
+        >
+          Create/Edit Summary
+        </button>
+        <button
+          onClick={handleRefresh}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200"
+        >
+          Refresh Summaries
+        </button>
       </div>
 
-      <button onClick={handleToggleCreateSummary}>Create/Edit Summary</button>
-      <button onClick={handleRefresh}>Refresh Summaries</button>
       {enableCreateSummarySection === 1 && (
         <CreateComponent
           nodeID={nodeID}

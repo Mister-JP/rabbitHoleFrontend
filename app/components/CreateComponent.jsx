@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSummaries}) => {
     const [summary, setSummary] = useState("");
     const [links, setlinks] = useState([]);
+    const [imdbids, setimdbids] = useState([]);
     const [deletesArr, setDeletes] = useState([]);
     const [content, setContent] = useState("");
     const [linkCount, setLinkCount] = useState(1);
@@ -31,6 +32,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
             if(response.status ==200){
             setSummary(response.data.Summary.content);
             setlinks(response.data.Summary.links)
+            setimdbids(response.data.Summary?.imdbids)
           }
         }
       }
@@ -61,6 +63,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
             {
               content: summary,
               links,
+              imdbids,
               nodeID,
               deletes: deletesArr 
             },
@@ -89,6 +92,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
           {
             content,
             links,
+            imdbids,
             nodeID,
             pathID
           },
@@ -115,6 +119,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
         {
           content,
           links,
+          imdbids,
           nodeID,
           underCommentID: commentID
         },
@@ -164,72 +169,76 @@ const isPath = type === 'path';
 
 
   return (
-    <div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (type==='summary'){
-              onSubmitCreateSummary();
-            }
-            else if(type ==='commentOnPath'){
-              onSubmitCreateCommentOnPath();
-            }
-            else if(type ==='commentOnComment'){
-              onSubmitCreateSubComment();
-            }
-            else if(type === 'path'){
-              onSubmitCreatePath();
-            }
-            else{
-              console.log('no type recognized.')
-            }
-            // onSubmitCreateSource();
-          }}
-        >
-          {isSummary && 
-          <>
-          <label htmlFor="link">Summary:</label>
-          <input
-            type="text"
-            id="summary"
-            name="summary"
-            value={summary}
-            required
-            onChange={(e) => setSummary(e.target.value)}
-          />
-          <LinkInputForm links={links} setLinks={setlinks} deletesArr={deletesArr} setDeletes={setDeletes}/>
-          <br /></>}
+    <div className="bg-white p-8 rounded-md shadow-lg w-full max-w-md mx-auto">
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      if (type==='summary'){
+        onSubmitCreateSummary();
+      }
+      else if(type ==='commentOnPath'){
+        onSubmitCreateCommentOnPath();
+      }
+      else if(type ==='commentOnComment'){
+        onSubmitCreateSubComment();
+      }
+      else if(type === 'path'){
+        onSubmitCreatePath();
+      }
+      else{
+        console.log('no type recognized.')
+      }
+      // onSubmitCreateSource();
+    }}
+    className="space-y-6"
+  >
+    {isSummary && 
+    <>
+    <label htmlFor="link" className="block text-sm font-medium text-gray-700">Summary:</label>
+    <input
+      type="text"
+      id="summary"
+      name="summary"
+      value={summary}
+      required
+      onChange={(e) => setSummary(e.target.value)}
+      className="w-full p-2 border border-gray-300 rounded-md"
+    />
+    <LinkInputForm links={links} setLinks={setlinks} imdbids={imdbids} setimdbids={setimdbids} deletesArr={deletesArr} setDeletes={setDeletes} />
+    </>}
 
-          {isComment &&
-            <>
-            <label htmlFor="link">Comment:</label>
-              <input
-                type="text"
-                id="comment"
-                name="comment"
-                value={content}
-                required
-                onChange={(e) => setContent(e.target.value)}
-              />
-              <LinkInputForm links={links} setLinks={setlinks} deletesArr={deletesArr} setDeletes={setDeletes}/>
-          <br /></>}
+    {isComment &&
+      <>
+      <label htmlFor="link" className="block text-sm font-medium text-gray-700">Comment:</label>
+      <input
+        type="text"
+        id="comment"
+        name="comment"
+        value={content}
+        required
+        onChange={(e) => setContent(e.target.value)}
+        className="w-full p-2 border border-gray-300 rounded-md"
+      />
+      <LinkInputForm links={links} setLinks={setlinks} imdbids={imdbids} setimdbids={setimdbids} deletesArr={deletesArr} setDeletes={setDeletes} />
+      </>}
 
-          {isPath &&
-          <>
-          <label htmlFor="link">Path:</label>
-          <input
-            type="text"
-            id="path"
-            name="path"
-            value={summary}
-            required
-            onChange={(e) => setSummary(e.target.value)}
-          />
-          <br /></>
-          }
-          <button type="submit">Submit</button>
-        </form>
-      </div>
+    {isPath &&
+    <>
+    <label htmlFor="link" className="block text-sm font-medium text-gray-700">Path:</label>
+    <input
+      type="text"
+      id="path"
+      name="path"
+      value={summary}
+      required
+      onChange={(e) => setSummary(e.target.value)}
+      className="w-full p-2 border border-gray-300 rounded-md"
+    />
+    </>}
+    <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors duration-200">Submit</button>
+  </form>
+</div>
+
   )
 }
 

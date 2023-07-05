@@ -1,9 +1,10 @@
-.enabled {
-  opacity: 1;
-  pointer-events: auto;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.disabled {
-  opacity: 0.5;
-  pointer-events: none;
+@font-face {
+  font-family: 'PlusJakartaSans-Regular';
+  src: url('/fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }

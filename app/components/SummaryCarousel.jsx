@@ -38,26 +38,54 @@ const SummaryCarousel = ({ data, fetchSummaries, nodeID, userID }) => {
     
 
   return (
-    <div>
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-      <button onClick={handleLeftClick}>Left</button>
-      {data && data.length > 0 && (
-        <div style={{ textAlign: "center" }}>
-            {data[currentIndex].userID === userID && <>
-                <div>edit</div>
-            </>}
-          <p>{data[currentIndex].content}</p>
-          <p>Refrences: </p>
-          
-          <Score type={"summary"} id={data[currentIndex].id} score={data[currentIndex].score}/>
-        </div>
-      )}
+    <div className="bg-white rounded-lg shadow-lg p-6 space-y-6 text-gray-800">
+  <div className="flex items-center justify-between space-x-4">
+    <button 
+      onClick={handleLeftClick}
+      className="bg-blue-200 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-300"
+    >
+      Left
+    </button>
 
-      <button onClick={handleRightClick}>Right</button>
-    </div>
-      <button onClick={handleTogglePath}>Path</button>
-      {data && data.length > 0 && enablePathSection===1 && <Paths nodeID={nodeID} summaryID={data[currentIndex].id}/>}
-    </div>
+    {data && data.length > 0 && (
+      <div className="text-center">
+        {data[currentIndex].userID === userID && (
+          <div className="text-sm text-gray-500 mb-2">Edit</div>
+        )}
+
+        <p className="text-lg">{data[currentIndex].content}</p>
+
+        <p className="text-sm text-gray-500 mt-4 mb-2">References:</p>
+        
+        <Score 
+          type={"summary"} 
+          id={data[currentIndex].id} 
+          score={data[currentIndex].score}
+          className="text-sm text-gray-500"
+        />
+      </div>
+    )}
+
+    <button 
+      onClick={handleRightClick}
+      className="bg-blue-200 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-300"
+    >
+      Right
+    </button>
+  </div>
+
+  <button 
+    onClick={handleTogglePath}
+    className="bg-green-200 text-green-700 py-2 px-4 rounded-lg hover:bg-green-300 w-full text-center"
+  >
+    Path
+  </button>
+
+  {data && data.length > 0 && enablePathSection === 1 && (
+    <Paths nodeID={nodeID} summaryID={data[currentIndex].id} />
+  )}
+</div>
+
   );
 };
 

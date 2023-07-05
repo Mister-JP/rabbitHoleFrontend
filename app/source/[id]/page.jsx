@@ -30,21 +30,23 @@ const SourcePage = ({ params: { id } }) => {
 
   let displayContent;
   if (error) {
-    displayContent = <h1>{error}</h1>;
+    displayContent = error;
   } else if (!data) {
-    displayContent = <h1>Loading...</h1>;
+    displayContent = "Loading...";
   } else if (data.message) {
-    displayContent = <h1>{data.message}</h1>;
+    displayContent = data.message;
   } else {
-    displayContent = <h1>{data.link}</h1>;
+    displayContent = data.link;
   }
 
   return (
     <>
-    <div style={{ border: '1px solid black', padding: '10px', marginBottom: '10px' }}>
-      {displayContent}
-      {data && <Score type={'node'} id={id} score={data.score}/>}
-    </div>
+    <div className="border-blue-200 border-1 m-10 p-10 mb-10 bg-gradient-to-r from-blue-200 to-blue-300 text-Black rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold mb-4"> {displayContent} </h1>
+      {data && <Score type={'node'} id={id} className="mt-5" score={data.score}/>}
+</div>
+
+
     <Summaries nodeID={id}/>
     </>
   );

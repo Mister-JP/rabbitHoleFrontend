@@ -495,86 +495,104 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
 
   return (
     <>
-    <div style={{ border: '1px solid black', padding: '10px' }}>
-    <div>
-        <label>Filter by Score</label>
-        <input type="checkbox" checked={sortEnabled} onChange={toggleSort} />
-      </div>
-      <div className={`sort-controls ${sortEnabled ? "enabled" : "disabled"}`}>
-        {["index1", "index2", "index3", "index4", "index5"].map((indexKey) => (
-          <label key={indexKey}>
+      <div style={{ border: "1px solid black", padding: "10px" }}>
+        <div>
+          <label>Filter by Score</label>
+          <input type="checkbox" checked={sortEnabled} onChange={toggleSort} />
+        </div>
+        <div
+          className={`sort-controls ${sortEnabled ? "enabled" : "disabled"}`}
+        >
+          {["index1", "index2", "index3", "index4", "index5"].map(
+            (indexKey) => (
+              <label key={indexKey}>
+                <input
+                  type="checkbox"
+                  name={indexKey}
+                  checked={index[indexKey] === 1}
+                  onChange={handleCheckboxChange}
+                />
+                {indexKey}
+              </label>
+            )
+          )}
+
+          <button onClick={handleScoreDescToggle}>
+            {scoreDesc === 1 ? "Desc" : "Asc"}
+          </button>
+        </div>
+        <div>
+          <label>Filter by Time</label>
+          <input type="checkbox" checked={timeEnabled} onChange={toggleTime} />
+        </div>
+        <div
+          className={`time-controls ${timeEnabled ? "enabled" : "disabled"}`}
+        >
+          <button onClick={handleBeforeAfterToggle}>
+            {before === 1 ? "before" : "after"}
+          </button>
+          <input type="date" value={date} onChange={handleDateChange} />
+          <input type="time" value={timeStamp} onChange={handleTimeChange} />
+          <button onClick={handleNewestToggle}>
+            {newest === 1 ? "New to Old" : "Old to New"}
+          </button>
+        </div>
+
+        <div
+          className={`sort-order-controls ${
+            sortOrderEnabled ? "enabled" : "disabled"
+          }`}
+        >
+          <p>Primary Sort</p>
+          <label>
             <input
-              type="checkbox"
-              name={indexKey}
-              checked={index[indexKey] === 1}
-              onChange={handleCheckboxChange}
+              type="radio"
+              value="Score"
+              checked={sortOrder === 1}
+              onChange={handleSortOrderScoreTimeToggle}
             />
-            {indexKey}
+            Score
           </label>
-        ))}
+          <label>
+            <input
+              type="radio"
+              value="Time"
+              checked={sortOrder === 0}
+              onChange={handleSortOrderScoreTimeToggle}
+            />
+            Time
+          </label>
+        </div>
 
-        <button onClick={handleScoreDescToggle}>
-          {scoreDesc === 1 ? "Desc" : "Asc"}
-        </button>
+        <div className="search-controls">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchText}
+            onChange={handleSearchChange}
+          />
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
+        <button onClick={handleRefresh}>Refresh Paths</button>
       </div>
       <div>
-        <label>Filter by Time</label>
-        <input type="checkbox" checked={timeEnabled} onChange={toggleTime} />
+        {/* {data && data.length > 0 && <><PathCarousel data={data} fetchPaths={fetchPaths} nodeID={nodeID}/></>} */}
+        {data && data.length > 0 && (
+          <>
+            <PathCarousel
+              data={data}
+              fetchPaths={fetchPaths}
+              nodeID={nodeID}
+              loading={loading}
+              errorOccurred={errorOccured}
+              hasMoreData={hasMoreData}
+              currentIndex={currentIndex}
+              setCurrentIndex={setCurrentIndex}
+            />
+          </>
+        )}
       </div>
-      <div className={`time-controls ${timeEnabled ? "enabled" : "disabled"}`}>
-        <button onClick={handleBeforeAfterToggle}>
-          {before === 1 ? "before" : "after"}
-        </button>
-        <input type="date" value={date} onChange={handleDateChange} />
-        <input type="time" value={timeStamp} onChange={handleTimeChange} />
-        <button onClick={handleNewestToggle}>
-          {newest === 1 ? "New to Old" : "Old to New"}
-        </button>
-      </div>
-
-      <div
-        className={`sort-order-controls ${
-          sortOrderEnabled ? "enabled" : "disabled"
-        }`}
-      >
-        <p>Primary Sort</p>
-        <label>
-          <input
-            type="radio"
-            value="Score"
-            checked={sortOrder === 1}
-            onChange={handleSortOrderScoreTimeToggle}
-          />
-          Score
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="Time"
-            checked={sortOrder === 0}
-            onChange={handleSortOrderScoreTimeToggle}
-          />
-          Time
-        </label>
-      </div>
-
-      <div className="search-controls">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchText}
-          onChange={handleSearchChange}
-        />
-        <button onClick={handleSubmit}>Submit</button>
-      </div>
-      <button onClick={handleRefresh}>Refresh Paths</button>
-      </div>
-      <div>
-      {/* {data && data.length > 0 && <><PathCarousel data={data} fetchPaths={fetchPaths} nodeID={nodeID}/></>} */}
-      {data && data.length > 0 &&<><PathCarousel data={data} fetchPaths={fetchPaths} nodeID={nodeID} loading={loading} errorOccurred={errorOccured} hasMoreData={hasMoreData} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex}/></>}
-      
-    </div>
-    {/* <CreateComponent nodeID={nodeID} type='summary'/> */}
+      {/* <CreateComponent nodeID={nodeID} type='summary'/> */}
     </>
   );
 };
