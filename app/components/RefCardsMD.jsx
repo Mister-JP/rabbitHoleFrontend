@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import api from '../api/LocalApi';
@@ -7,7 +8,7 @@ import Link from 'next/link';
 
 
 
-const RefCardsMD = ({reference, nodeID}) => {
+const RefCardsMD = ({reference, nodeID, commentsButton}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [data, setData] = useState(null);
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
@@ -15,15 +16,24 @@ const RefCardsMD = ({reference, nodeID}) => {
     const [totalScore, setTotalScore] = useState(null);
     const router = useRouter();
     const [pathID, setPathID] = useState('');
+    const [enableComment, setEnableComment] = useState(true);
     // console.log(reference)
     // console.log(nodeID)
+
+    useEffect(()=>{
+        if(commentsButton!==null){
+            setEnableComment(commentsButton)
+        }
+        
+    }, [])
 
     useEffect(()=>{
         const fetchData = async () => {
             try{
                 await fetchMovieDetails();
-                await fetchUserNodescore();
                 await fetchPathID();
+                await fetchUserNodescore();
+                
             }
             catch{
                 console.log("Error occured!")
@@ -183,12 +193,12 @@ const RefCardsMD = ({reference, nodeID}) => {
                 />
               </div>
             )}
-            <div class="border-r h-6 border-gray-200"></div>
+            {enableComment && <><div class="border-r h-6 border-gray-200"></div>
             <div className='flex flex-row items-center'>
             <img src='/svgs/commentSVG.svg' className='m-1 w-6'/>
             {/* <div class="text-gray-600 text-sm">Comments</div> */}
-            <Link href={`/comments/${pathID}`} className="text-gray-600 text-sm">Comments</Link>
-            </div>
+            <Link href={`/comments/${pathID}/${nodeID}`} className="text-gray-600 text-sm">Comments</Link>
+            </div></>}
             <div class="border-r h-6 border-gray-200"></div>
             <div className='flex flex-row items-center'>
             <img src='/svgs/Recommendation.svg' className='m-1 w-6'/>

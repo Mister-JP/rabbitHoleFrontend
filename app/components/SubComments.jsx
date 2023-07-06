@@ -1,11 +1,10 @@
-'use client';
 import React from 'react'
 import { useState, useEffect } from 'react';
 import api from '../api/LocalApi';
 import RefCardsMD from './RefCardsMD';
 import References from './References';
 
-const RecommendationCard = ({isFrom, recommendation, nodeID}) => {
+const SubCommentCard = ({isFrom, recommendation, nodeID, nodes}) => {
 
 //   console.log(recommendation)
   const [recommendationScore, setRecommendationScore] = useState(0);
@@ -15,15 +14,15 @@ const RecommendationCard = ({isFrom, recommendation, nodeID}) => {
   const fetchRecScore = async () =>{
     try {
         const token = localStorage.getItem('token');
-        const score = await api.get('/getScoreUserSummary', {
-            params: { summaryID: recommendation.id },
+        const score = await api.get('/getScoreUserComment', {
+            params: { commentID: recommendation.id },
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
-        const summary = await api.get('/getScoreSummary', {
-            params: {summaryID: recommendation.id},
+        const summary = await api.get('/getScoreComment', {
+            params: {commentID: recommendation.id},
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -34,38 +33,35 @@ const RecommendationCard = ({isFrom, recommendation, nodeID}) => {
     } 
     catch (error) {
         console.log(error)
-        console.log("here5")
         setError('Error fetching source data');
-        console.log("here6")
     }
 }
 
 const fetchRefs = async () =>{
     try {
-        const references = await api.get('/getRefsFromSummary', {
-            params: { summaryID: recommendation.id, nodeID: nodeID },
+        const references = await api.get('/getRefsFromComment', {
+            params: { commentID: recommendation.id, startnode_id: nodes[0].id, endnode_id: nodes[1].id },
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        
+        console.log("fetchrefs: ",recommendation.content)
+        console.log(references.data.Refs)
         setRefs(references.data.Refs);
         // setRecommendationScore(score.data.score);
         // console.log("for nodeid: ", recommendation.id, "score = ", recommendationScore)
     } 
     catch (error) {
         console.log(error)
-        console.log("here5")
         setError('Error fetching source data');
-        console.log("here6")
     }
 }
 
 const handleScoreChange = async(newScore) =>{
     try{
       const token = localStorage.getItem('token');
-      const response = await api.post("/scoreSummary",
-          {summaryID: recommendation.id, score: newScore},
+      const response = await api.post("/scoreComment",
+          {commentID: recommendation.id, score: newScore},
           {
           headers: {
               'Content-Type': 'application/json',
@@ -85,10 +81,12 @@ const handleScoreChange = async(newScore) =>{
         const fetchData = async () => {
             try{
                 //setTotalScore(recommendation.score);
-                await fetchRecScore();
                 await fetchRefs();
+                await fetchRecScore();
+                console.log("successfully loaded card: ", recommendation.content)
             }
             catch{
+                console.log("found error in useffect of card: ", recommendation.content)
                 console.log("Error occured!")
             }
         }
@@ -97,6 +95,7 @@ const handleScoreChange = async(newScore) =>{
     }, [recommendation])
 
   return (
+    <>
     <div className='flex flex-col border border-black rounded-lg m-5'>
         <div className='flex flex-row'>
         <div className='flex flex-row border border-black rounded-full px-2 m-5'>
@@ -183,7 +182,9 @@ const handleScoreChange = async(newScore) =>{
             )}
         <References nodeID={nodeID} refs={refs}/>
     </div>
+    
+    </>
   )
 }
 
-export default RecommendationCard
+export default SubCommentCard

@@ -3,17 +3,21 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import api from '@/app/api/LocalApi'
 import RefCardsMD from '@/app/components/RefCardsMD'
+import CommentsSection from '@/app/components/CommentsSection'
+import CreateComment from '@/app/components/CreateComment'
 
-const commentsPage = ({ params: { id } }) => {
+const commentsPage = ({ params: { pathID, nodeID } }) => {
   const [nodes, setNodes] = useState(null);
   const [totalScore, setTotalScore] = useState(null);
   const [nodeScore, setNodeScore] = useState(null);
+  const [isComments, setIsComments] = useState(true);
+
 
   const handleScoreChange = async(newScore) =>{
     try{
       const token = localStorage.getItem('token');
       const response = await api.post("/scorePath",
-          {pathID: id, score: newScore},
+          {pathID: pathID, score: newScore},
           {
           headers: {
               'Content-Type': 'application/json',
@@ -35,7 +39,7 @@ const commentsPage = ({ params: { id } }) => {
 
         
         const response = await api.get('/getScorePath', {
-        params: { pathID: id },
+        params: { pathID: pathID },
         headers: {
             'Content-Type': 'application/json'
         },
@@ -53,13 +57,12 @@ const commentsPage = ({ params: { id } }) => {
 
         
         const response = await api.get('/getUserScorePath', {
-        params: { pathID: id },
+        params: { pathID: pathID },
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
         });
-        console.log(response)
         setNodeScore(response.data.score);
     } 
     catch (error) {
@@ -71,7 +74,7 @@ const commentsPage = ({ params: { id } }) => {
     try{
         const token = localStorage.getItem('token');
         const response = await api.get("/getNodesFromPathID",{
-            params: { pathID: id },
+            params: { pathID: pathID },
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -99,7 +102,7 @@ const commentsPage = ({ params: { id } }) => {
     }
 
     fetchData();
-  }, [id])
+  }, [pathID])
   return (
     <>
     <div className='flex flex-row justify-between'>
@@ -107,7 +110,7 @@ const commentsPage = ({ params: { id } }) => {
         nodes.map((node, index)=>{
             return(
                     <>
-                    <RefCardsMD reference={node} nodeID={id}/>
+                    <RefCardsMD reference={node} nodeID={nodeID} commentsButton={false}/>
                     {index===0 && <img src='/svgs/pathSVG.svg' className='w-12'/>}
                     </>
                 )
@@ -133,59 +136,82 @@ const commentsPage = ({ params: { id } }) => {
     </div>
     <hr class="ml-5 mr-5 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-5 light:bg-gray-700"></hr>
     {nodeScore !== null && (
-              <div className="ml-5 flex space-between space-x-4">
-                <img
-                  src={
-                    nodeScore === 2
-                      ? `/svgs/DoubleThumbsUpGreen.svg`
-                      : `/svgs/DoubleThumbsUp.svg`
-                  }
-                  alt="double thumbs up"
-                  className="w-6"
-                  onClick={() => handleScoreChange(2)}
-                />
-                <img
-                  src={
-                    nodeScore === 1
-                      ? `/svgs/ThumbsUpGreen.svg`
-                      : `/svgs/ThumbsUp.svg`
-                  }
-                  alt="thumbs up"
-                  className="w-6"
-                  onClick={() => handleScoreChange(1)}
-                />
-                <img
-                  src={
-                    nodeScore === 0
-                      ? `/svgs/PeaceYellow.svg`
-                      : `/svgs/Peace.svg`
-                  }
-                  alt="peace"
-                  className="w-6"
-                  onClick={() => handleScoreChange(0)}
-                />
-                <img
-                  src={
-                    nodeScore === -1
-                      ? `/svgs/ThumbsUpRed.svg`
-                      : `/svgs/ThumbsUp.svg`
-                  }
-                  alt="thumbs down"
-                  className="w-6 rotate-180"
-                  onClick={() => handleScoreChange(-1)}
-                />
-                <img
-                  src={
-                    nodeScore === -2
-                      ? `/svgs/DoubleThumbsUpRed.svg`
-                      : `/svgs/DoubleThumbsUp.svg`
-                  }
-                  alt="double thumbs down"
-                  className="w-6 rotate-180"
-                  onClick={() => handleScoreChange(-2)}
-                />
-              </div>
-            )}
+        <div className="ml-5 flex space-between space-x-4">
+            <img
+                src={
+                nodeScore === 2
+                    ? `/svgs/DoubleThumbsUpGreen.svg`
+                    : `/svgs/DoubleThumbsUp.svg`
+                }
+                alt="double thumbs up"
+                className="w-6"
+                onClick={() => handleScoreChange(2)}
+            />
+            <img
+                src={
+                nodeScore === 1
+                    ? `/svgs/ThumbsUpGreen.svg`
+                    : `/svgs/ThumbsUp.svg`
+                }
+                alt="thumbs up"
+                className="w-6"
+                onClick={() => handleScoreChange(1)}
+            />
+            <img
+                src={
+                nodeScore === 0
+                    ? `/svgs/PeaceYellow.svg`
+                    : `/svgs/Peace.svg`
+                }
+                alt="peace"
+                className="w-6"
+                onClick={() => handleScoreChange(0)}
+            />
+            <img
+                src={
+                nodeScore === -1
+                    ? `/svgs/ThumbsUpRed.svg`
+                    : `/svgs/ThumbsUp.svg`
+                }
+                alt="thumbs down"
+                className="w-6 rotate-180"
+                onClick={() => handleScoreChange(-1)}
+            />
+            <img
+                src={
+                nodeScore === -2
+                    ? `/svgs/DoubleThumbsUpRed.svg`
+                    : `/svgs/DoubleThumbsUp.svg`
+                }
+                alt="double thumbs down"
+                className="w-6 rotate-180"
+                onClick={() => handleScoreChange(-2)}
+            />
+        </div>
+    )}
+    <div className="m-5 flex">
+        <button
+        className={`px-4 py-2 rounded-l-full ${
+            isComments
+            ? "dark:bg-black dark:text-white"
+            : "dark:bg-gray-300 dark:text-black"
+        }`}
+        onClick={() => setIsComments(true)}
+        >
+        Comments
+        </button>
+        <button
+        className={`px-4 py-2 rounded-r-full ${
+            !isComments
+            ? "dark:bg-black dark:text-white"
+            : "dark:bg-gray-300 dark:text-black"
+        }`}
+        onClick={() => setIsComments(false)}
+        >
+        Only Reference
+        </button>
+    </div>
+    {isComments && nodes!==null && <CommentsSection pathID={pathID} nodeID={nodeID} nodes={nodes}/>}
     </>
   )
 }

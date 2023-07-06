@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import RefCardsMD from './RefCardsMD';
 
@@ -28,7 +29,7 @@ const References = ({refs, nodeID}) => {
       </div>
       <div className={`transition-all duration-500 ease-in-out mb-5 ${isExpanded ? 'h-auto opacity-100' : 'overflow-hidden p-0 h-0 opacity-50'}`}>
         {refs.length>0 && refs.map((ref, index) =>{
-            return( <RefCardsMD reference={ref} key={index} nodeID={nodeID}/>)
+            return( <RefCardsMD reference={ref} key={index} nodeID={nodeID} commentsButton={true}/>)
         })}
       </div>
       </div>
