@@ -57,10 +57,12 @@ const RefCardsMD = ({reference, nodeID, commentsButton}) => {
 
     const fetchPathID = async () => {
         try{
+            const token = localStorage.getItem('token');
             const pathID = await api.get('/getPathID', {
                 params: { startNodeID: nodeID, endNodeID: reference.id },
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
                 },
             });
             setPathID(pathID.data.pathID);

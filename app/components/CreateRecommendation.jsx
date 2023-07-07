@@ -5,7 +5,7 @@ import RefCardSM from './RefCardSM';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-const CreateRecommendation = ({nodeID}) => {
+const CreateRecommendation = ({nodeID, fetchData}) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
@@ -100,6 +100,7 @@ const CreateRecommendation = ({nodeID}) => {
           }
         );
         setIsExpanded(false);
+        fetchData();
       //   router.push("/source/" + response.data.nodeID);
       } catch (error) {
         console.error("Error during create source:", error);

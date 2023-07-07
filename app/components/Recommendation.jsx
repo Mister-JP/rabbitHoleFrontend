@@ -29,6 +29,10 @@ const Recommendation = ({nodeID}) => {
     if (typeof window !== 'undefined') {
       token = window.localStorage.getItem('token');
     }
+
+    useEffect(()=>{
+      console.log(recommendations)
+    }, [recommendations])
     
 
 // Pass params object to axios get method
@@ -41,165 +45,167 @@ const Recommendation = ({nodeID}) => {
     useEffect(() => {
         setRotationClass(isExpanded ? 'animate-spin-0' : 'animate-spin-90');
     }, [isExpanded])
+
+    const fetchData = async () => {
+      // Calculate the timestamp
+      const getCurrentDateTime = (offsetDays = 0) => {
+        const date = new Date();
+        date.setDate(date.getDate() - offsetDays); // Subtract days if any
+
+        const current_date =
+          date.getUTCFullYear() +
+          "-" +
+          (date.getUTCMonth() + 1).toString().padStart(2, "0") +
+          "-" +
+          date.getUTCDate().toString().padStart(2, "0");
+        const current_time =
+          date.getUTCHours().toString().padStart(2, "0") +
+          ":" +
+          date.getUTCMinutes().toString().padStart(2, "0") +
+          ":" +
+          date.getUTCSeconds().toString().padStart(2, "0");
+
+        return `${current_date} ${current_time}`
+      };
+
+      let params = {
+        offset: "0",
+        limit: "50",
+        before: "1",
+        timestamp: getCurrentDateTime(),
+        filterByNodeID: "1",
+        nodeID: nodeID,
+        sortOrderScoreTime: "1",
+        summary_search_string: search,
+      };
+
+      // Check score checkbox
+      if (isCheckboxCheckedScore) {
+        // Filter the levels based on state
+        let userLevels = [
+          isUserLevel1,
+          isUserLevel2,
+          isUserLevel3,
+          isUserLevel4,
+          isUserLevel5,
+        ];
+        let indices = userLevels.flatMap((level, index) =>
+          level ? index + 1 : []
+        );
+        params.indices = indices.join(",");
+        params = {
+          ...params,
+          indices: indices.toString(),
+          descending: isDesc ? 1 : 0
+        };
+        if (isScore) {
+          params.sortOrderScoreTime = 1;
+        }
+        if(!isCheckboxCheckedTime && !isScore){
+          setIsScore(!isScore);
+        }
+      }
+
+      // Check time checkbox
+      if (isCheckboxCheckedTime) {
+        switch (selectedOption) {
+          case "24hours":
+            params.before = "0";
+            params.timestamp = getCurrentDateTime(1);
+            break;
+          case "1week":
+            params.before = "0";
+            params.timestamp = getCurrentDateTime(7);
+            break;
+          case "1month":
+            params.before = "0";
+            params.timestamp = getCurrentDateTime(30);
+            break;
+          case "6months":
+            params.before = "0";
+            params.timestamp = getCurrentDateTime(180);
+            break;
+          case "1year":
+            params.before = "0";
+            params.timestamp = getCurrentDateTime(365);
+            break;
+          default:
+            params.before = "1";
+            params.timestamp = getCurrentDateTime();
+            break;
+        }
+        if (!isScore) {
+          params.sortOrderScoreTime = 0;
+        }
+        if(!isCheckboxCheckedScore && isScore){
+          setIsScore(!isScore);
+        }
+        params = {
+          ...params,
+          newest: isNewest ? 1 : 0
+        };
+
+      }
+
+      // Check sortOrder
+      if (isCheckboxCheckedScore && isCheckboxCheckedTime) {
+        params.sortOrderScoreTime = isScore ? "1" : "0";
+      }
+      if(!isFrom){
+        try {
+          const response = await axios.get(
+            "http://localhost:8000/getSummariesSortBoth",
+            {
+              params: params,
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setRecommendations(response.data.Source);
+        } catch (error) {
+          console.error("There was an error!", error);
+        }
+      }
+      else{
+        try {
+          const response = await axios.get(
+            "http://localhost:8000/getSummaryFromNodeIDFrom",
+            {
+              params: params,
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setRecommendations(response.data.Summaries);
+        } catch (error) {
+          console.error("There was an error!", error);
+        }
+      }
+      // try {
+      //   const response = await axios.get(
+      //     "http://localhost:8000/getSummariesSortBoth",
+      //     {
+      //       params: params,
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //     }
+      //   );
+      //   setRecommendations(response.data.Source);
+      //   console.log(response.data);
+      // } catch (error) {
+      //   console.error("There was an error!", error);
+      // }
+    };
     
 
     useEffect(() => {
-      const fetchData = async () => {
-        // Calculate the timestamp
-        const getCurrentDateTime = (offsetDays = 0) => {
-          const date = new Date();
-          date.setDate(date.getDate() - offsetDays); // Subtract days if any
-
-          const current_date =
-            date.getUTCFullYear() +
-            "-" +
-            (date.getUTCMonth() + 1).toString().padStart(2, "0") +
-            "-" +
-            date.getUTCDate().toString().padStart(2, "0");
-          const current_time =
-            date.getUTCHours().toString().padStart(2, "0") +
-            ":" +
-            date.getUTCMinutes().toString().padStart(2, "0") +
-            ":" +
-            date.getUTCSeconds().toString().padStart(2, "0");
-
-          return `${current_date} ${current_time}`
-        };
-
-        let params = {
-          offset: "0",
-          limit: "50",
-          before: "1",
-          timestamp: getCurrentDateTime(),
-          filterByNodeID: "1",
-          nodeID: nodeID,
-          sortOrderScoreTime: "1",
-          summary_search_string: search,
-        };
-
-        // Check score checkbox
-        if (isCheckboxCheckedScore) {
-          // Filter the levels based on state
-          let userLevels = [
-            isUserLevel1,
-            isUserLevel2,
-            isUserLevel3,
-            isUserLevel4,
-            isUserLevel5,
-          ];
-          let indices = userLevels.flatMap((level, index) =>
-            level ? index + 1 : []
-          );
-          params.indices = indices.join(",");
-          params = {
-            ...params,
-            indices: indices.toString(),
-            descending: isDesc ? 1 : 0
-          };
-          if (isScore) {
-            params.sortOrderScoreTime = 1;
-          }
-          if(!isCheckboxCheckedTime && !isScore){
-            setIsScore(!isScore);
-          }
-        }
-
-        // Check time checkbox
-        if (isCheckboxCheckedTime) {
-          switch (selectedOption) {
-            case "24hours":
-              params.before = "0";
-              params.timestamp = getCurrentDateTime(1);
-              break;
-            case "1week":
-              params.before = "0";
-              params.timestamp = getCurrentDateTime(7);
-              break;
-            case "1month":
-              params.before = "0";
-              params.timestamp = getCurrentDateTime(30);
-              break;
-            case "6months":
-              params.before = "0";
-              params.timestamp = getCurrentDateTime(180);
-              break;
-            case "1year":
-              params.before = "0";
-              params.timestamp = getCurrentDateTime(365);
-              break;
-            default:
-              params.before = "1";
-              params.timestamp = getCurrentDateTime();
-              break;
-          }
-          if (!isScore) {
-            params.sortOrderScoreTime = 0;
-          }
-          if(!isCheckboxCheckedScore && isScore){
-            setIsScore(!isScore);
-          }
-          params = {
-            ...params,
-            newest: isNewest ? 1 : 0
-          };
-
-        }
-
-        // Check sortOrder
-        if (isCheckboxCheckedScore && isCheckboxCheckedTime) {
-          params.sortOrderScoreTime = isScore ? "1" : "0";
-        }
-        if(!isFrom){
-          try {
-            const response = await axios.get(
-              "http://localhost:8000/getSummariesSortBoth",
-              {
-                params: params,
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            setRecommendations(response.data.Source);
-          } catch (error) {
-            console.error("There was an error!", error);
-          }
-        }
-        else{
-          try {
-            const response = await axios.get(
-              "http://localhost:8000/getSummaryFromNodeIDFrom",
-              {
-                params: params,
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            setRecommendations(response.data.Summaries);
-          } catch (error) {
-            console.error("There was an error!", error);
-          }
-        }
-        // try {
-        //   const response = await axios.get(
-        //     "http://localhost:8000/getSummariesSortBoth",
-        //     {
-        //       params: params,
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         Authorization: `Bearer ${token}`,
-        //       },
-        //     }
-        //   );
-        //   setRecommendations(response.data.Source);
-        //   console.log(response.data);
-        // } catch (error) {
-        //   console.error("There was an error!", error);
-        // }
-      };
+      
 
       fetchData();
     }, [
@@ -235,7 +241,7 @@ const Recommendation = ({nodeID}) => {
       <img src="/svgs/Recommendation.svg" className='w-6'/>
       <p>Recommendations: </p>
       </div>
-      <CreateRecommendation nodeID = {nodeID}/>
+      <CreateRecommendation nodeID = {nodeID} fetchData={fetchData}/>
       { recommendations && recommendations.length>0 &&
       recommendations.map((recommendation, index)=>(
         

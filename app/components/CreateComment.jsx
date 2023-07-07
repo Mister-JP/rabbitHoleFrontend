@@ -5,7 +5,7 @@ import RefCardSM from './RefCardSM';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-const CreateComment = ({pathID, commentID, isPath, nodeID, labelText}) => {
+const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData}) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
@@ -129,6 +129,7 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText}) => {
           }
         );
         setIsExpanded(false);
+        fetchData();
       //   router.push("/source/" + response.data.nodeID);
       } catch (error) {
         console.error("Error during create source:", error);

@@ -47,135 +47,137 @@ const CommentSectionCard = ({pathID, isFrom, recommendation, nodeID, nodes}) => 
     useEffect(() => {
         setRotationClass(isExpanded ? 'animate-spin-0' : 'animate-spin-90');
     }, [isExpanded])
+
+    const fetchDataSubComments = async () => {
+      // Calculate the timestamp
+      const getCurrentDateTime = (offsetDays = 0) => {
+        const date = new Date();
+        date.setDate(date.getDate() - offsetDays); // Subtract days if any
+
+        const current_date =
+          date.getUTCFullYear() +
+          "-" +
+          (date.getUTCMonth() + 1).toString().padStart(2, "0") +
+          "-" +
+          date.getUTCDate().toString().padStart(2, "0");
+        const current_time =
+          date.getUTCHours().toString().padStart(2, "0") +
+          ":" +
+          date.getUTCMinutes().toString().padStart(2, "0") +
+          ":" +
+          date.getUTCSeconds().toString().padStart(2, "0");
+
+        return `${current_date} ${current_time}`
+      };
+
+      let params = {
+        offset: "0",
+        limit: "50",
+        before: "1",
+        timestamp: getCurrentDateTime(),
+        sortOrderScoreTime: "1",
+        summary_search_string: search,
+      };
+
+      // Check score checkbox
+      if (isCheckboxCheckedScore) {
+        // Filter the levels based on state
+        let userLevels = [
+          isUserLevel1,
+          isUserLevel2,
+          isUserLevel3,
+          isUserLevel4,
+          isUserLevel5,
+        ];
+        let indices = userLevels.flatMap((level, index) =>
+          level ? index + 1 : []
+        );
+        params.indices = indices.join(",");
+        params = {
+          ...params,
+          indices: indices.toString(),
+          descending: isDesc ? 1 : 0
+        };
+        if (isScore) {
+          params.sortOrderScoreTime = 1;
+        }
+        if(!isCheckboxCheckedTime && !isScore){
+          setIsScore(!isScore);
+        }
+      }
+
+      // Check time checkbox
+      if (isCheckboxCheckedTime) {
+        switch (selectedOption) {
+          case "24hours":
+            params.before = "0";
+            params.timestamp = getCurrentDateTime(1);
+            break;
+          case "1week":
+            params.before = "0";
+            params.timestamp = getCurrentDateTime(7);
+            break;
+          case "1month":
+            params.before = "0";
+            params.timestamp = getCurrentDateTime(30);
+            break;
+          case "6months":
+            params.before = "0";
+            params.timestamp = getCurrentDateTime(180);
+            break;
+          case "1year":
+            params.before = "0";
+            params.timestamp = getCurrentDateTime(365);
+            break;
+          default:
+            params.before = "1";
+            params.timestamp = getCurrentDateTime();
+            break;
+        }
+        if (!isScore) {
+          params.sortOrderScoreTime = 0;
+        }
+        if(!isCheckboxCheckedScore && isScore){
+          setIsScore(!isScore);
+        }
+        params = {
+          ...params,
+          newest: isNewest ? 1 : 0,
+          filterByCommentID: 1,
+          commentID: recommendation.id
+        };
+
+      }
+
+      
+
+      // Check sortOrder
+      if (isCheckboxCheckedScore && isCheckboxCheckedTime) {
+        params.sortOrderScoreTime = isScore ? "1" : "0";
+      }
+      try {
+          const response = await axios.get(
+            "http://localhost:8000/getCommentsSortBoth",
+            {
+              params: params,
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setRecommendations(response.data.Comments);
+      } catch (error) {
+        console.error("There was an error!", error);
+      }
+    };
     
 
     useEffect(() => {
       
-      const fetchData = async () => {
-        // Calculate the timestamp
-        const getCurrentDateTime = (offsetDays = 0) => {
-          const date = new Date();
-          date.setDate(date.getDate() - offsetDays); // Subtract days if any
+      
 
-          const current_date =
-            date.getUTCFullYear() +
-            "-" +
-            (date.getUTCMonth() + 1).toString().padStart(2, "0") +
-            "-" +
-            date.getUTCDate().toString().padStart(2, "0");
-          const current_time =
-            date.getUTCHours().toString().padStart(2, "0") +
-            ":" +
-            date.getUTCMinutes().toString().padStart(2, "0") +
-            ":" +
-            date.getUTCSeconds().toString().padStart(2, "0");
-
-          return `${current_date} ${current_time}`
-        };
-
-        let params = {
-          offset: "0",
-          limit: "50",
-          before: "1",
-          timestamp: getCurrentDateTime(),
-          sortOrderScoreTime: "1",
-          summary_search_string: search,
-        };
-
-        // Check score checkbox
-        if (isCheckboxCheckedScore) {
-          // Filter the levels based on state
-          let userLevels = [
-            isUserLevel1,
-            isUserLevel2,
-            isUserLevel3,
-            isUserLevel4,
-            isUserLevel5,
-          ];
-          let indices = userLevels.flatMap((level, index) =>
-            level ? index + 1 : []
-          );
-          params.indices = indices.join(",");
-          params = {
-            ...params,
-            indices: indices.toString(),
-            descending: isDesc ? 1 : 0
-          };
-          if (isScore) {
-            params.sortOrderScoreTime = 1;
-          }
-          if(!isCheckboxCheckedTime && !isScore){
-            setIsScore(!isScore);
-          }
-        }
-
-        // Check time checkbox
-        if (isCheckboxCheckedTime) {
-          switch (selectedOption) {
-            case "24hours":
-              params.before = "0";
-              params.timestamp = getCurrentDateTime(1);
-              break;
-            case "1week":
-              params.before = "0";
-              params.timestamp = getCurrentDateTime(7);
-              break;
-            case "1month":
-              params.before = "0";
-              params.timestamp = getCurrentDateTime(30);
-              break;
-            case "6months":
-              params.before = "0";
-              params.timestamp = getCurrentDateTime(180);
-              break;
-            case "1year":
-              params.before = "0";
-              params.timestamp = getCurrentDateTime(365);
-              break;
-            default:
-              params.before = "1";
-              params.timestamp = getCurrentDateTime();
-              break;
-          }
-          if (!isScore) {
-            params.sortOrderScoreTime = 0;
-          }
-          if(!isCheckboxCheckedScore && isScore){
-            setIsScore(!isScore);
-          }
-          params = {
-            ...params,
-            newest: isNewest ? 1 : 0,
-            filterByCommentID: 1,
-            commentID: recommendation.id
-          };
-
-        }
-
-        
-
-        // Check sortOrder
-        if (isCheckboxCheckedScore && isCheckboxCheckedTime) {
-          params.sortOrderScoreTime = isScore ? "1" : "0";
-        }
-        try {
-            const response = await axios.get(
-              "http://localhost:8000/getCommentsSortBoth",
-              {
-                params: params,
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            setRecommendations(response.data.Comments);
-        } catch (error) {
-          console.error("There was an error!", error);
-        }
-      };
-
-      fetchData();
+      fetchDataSubComments();
     }, [
       isScore,
       isUserLevel1,
@@ -255,6 +257,8 @@ const handleScoreChange = async(newScore) =>{
       console.log("Some error occured")
     }
   }
+
+  
 
   useEffect(() => {
         const fetchData = async () => {
@@ -359,9 +363,9 @@ const handleScoreChange = async(newScore) =>{
               </div>
             )}
         <div className='ml-5 w-5/6'>
-        <CreateComment labelText='Reply' isPath={false} commentID={recommendation.id} nodeID={nodeID}/>
+        <CreateComment labelText='Reply' isPath={false} commentID={recommendation.id} nodeID={nodeID} fetchData={fetchDataSubComments}/>
         </div>
-        <References nodeID={nodeID} refs={refs}/>
+        <References nodeID={nodeID} refs={refs} commentsButton={false}/>
         
     </div>
     { nodes!==null && recommendations && recommendations.length>0 &&

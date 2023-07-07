@@ -181,7 +181,7 @@ const handleScoreChange = async(newScore) =>{
                 />
               </div>
             )}
-        <References nodeID={nodeID} refs={refs}/>
+        <References nodeID={nodeID} refs={refs} commentsButton={true}/>
     </div>
   )
 }

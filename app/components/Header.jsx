@@ -25,9 +25,10 @@ const Header = () => {
         <nav className="flex space-x-6">
           <Link href="/createSource" className="py-2 px-4 rounded hover:bg-white hover:text-indigo-600 transition duration-200">Go to Source</Link>
           <Link href="/about" className="py-2 px-4 rounded hover:bg-white hover:text-indigo-600 transition duration-200">About</Link>
+          <div className="flex items-center space-x-2">
           <Link href="/login" className="py-2 px-4 rounded border border-black rounded-full hover:bg-black hover:text-white font-normal transition duration-200">Login</Link>
           <Link href="/register" className="py-2 px-4 rounded border border-black rounded-full hover:bg-black hover:text-white font-normal transition duration-200">Register</Link>
-
+          </div>
         </nav>
       </div>
   );

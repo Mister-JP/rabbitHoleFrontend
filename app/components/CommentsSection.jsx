@@ -43,10 +43,9 @@ const CommentsSection = ({pathID, nodeID, nodes}) => {
     useEffect(() => {
         setRotationClass(isExpanded ? 'animate-spin-0' : 'animate-spin-90');
     }, [isExpanded])
-    
 
-    useEffect(() => {
-      const fetchData = async () => {
+
+    const fetchData = async () => {
         // Calculate the timestamp
         const getCurrentDateTime = (offsetDays = 0) => {
           const date = new Date();
@@ -207,6 +206,9 @@ const CommentsSection = ({pathID, nodeID, nodes}) => {
         // }
       };
 
+    useEffect(() => {
+      
+
       fetchData();
     }, [
       isScore,
@@ -235,17 +237,17 @@ const CommentsSection = ({pathID, nodeID, nodes}) => {
       <div className={`transition-all duration-500 ease-in-out mb-5 ${isExpanded ? 'h-auto opacity-100' : 'overflow-hidden p-0 h-0 opacity-50'}`}>
       <FilterBar primary="Score" secondary="Time" primaryState={isScore} setPrimaryState={setIsScore} search={search} setSearch={setSearch} isCheckboxCheckedScore={isCheckboxCheckedScore} setIsCheckboxCheckedScore={setIsCheckboxCheckedScore} isCheckboxCheckedTime={isCheckboxCheckedTime} setIsCheckboxCheckedTime={setIsCheckboxCheckedTime} isUserLevel1={isUserLevel1} setIsUserLevel1={setIsUserLevel1} isUserLevel2={isUserLevel2} setIsUserLevel2={setIsUserLevel2} isUserLevel3={isUserLevel3} setIsUserLevel3={setIsUserLevel3} isUserLevel4={isUserLevel4} setIsUserLevel4={setIsUserLevel4} isUserLevel5={isUserLevel5} setIsUserLevel5={setIsUserLevel5} isDesc={isDesc} setIsDesc={setIsDesc} isNewest={isNewest} setIsNewest={setIsNewest} selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
       </div>
-      <ToggleButton primary="From" secondary="To" primaryState={isFrom} setPrimaryState={setIsFrom}/>
-      <div className='flex flex-row m-5'>
+      <div className='flex flex-row mb-5'>
       
       <img src="/svgs/commentSVG.svg" className='w-6'/>
       <p>Comments: </p>
       </div>
-      <CreateComment pathID = {pathID} nodeID={nodeID} labelText='Create Comment' isPath={true}/>
+      <CreateComment pathID = {pathID} nodeID={nodeID} labelText='Create Comment' isPath={true} fetchData={fetchData}/>
       { nodes!==null && recommendations && recommendations.length>0 &&
       recommendations.map((recommendation, index)=>(
         
         <CommentSectionCard key={index} isFrom={isFrom} recommendation={recommendation} pathID={pathID} nodeID={nodeID} nodes={nodes}/>
+        
         
       ))
       

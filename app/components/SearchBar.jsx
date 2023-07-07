@@ -79,7 +79,7 @@ const SearchBar = ({handleSearchClick}) => {
         )}
       </div>
       {data.length > 0 && isInputActive && (
-        <div className="border border-black bg-white absolute mt-2 overflow-auto h-half w-80">
+        <div className="border border-black bg-white absolute mt-2 overflow-auto h-half w-80 z-50">
           {data.map((movie, index) => (
             <div key={index} className="flex items-center border-t border-gray-300 p-2" onClick={() => handleSearchResultClick(movie)}>
               {movie.poster_path && (
