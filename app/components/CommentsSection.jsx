@@ -8,8 +8,9 @@ import RecommendationCard from './RecommendationCard';
 import axios from 'axios';
 import CreateComment from './CreateComment';
 import CommentSectionCard from './CommentSectionCard';
+import PopUpLoginRegister from './PopUpLoginRegister';
 
-const CommentsSection = ({pathID, nodeID, nodes}) => {
+const CommentsSection = ({pathID, nodeID, nodes, setErrorCode}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
     const [isScore, setIsScore] = useState(false);
@@ -27,6 +28,7 @@ const CommentsSection = ({pathID, nodeID, nodes}) => {
     const [isCheckboxCheckedScore, setIsCheckboxCheckedScore] = useState(true);
     const [isCheckboxCheckedTime, setIsCheckboxCheckedTime] = useState(true);
     const [recommendations, setRecommendations] = useState(null);
+    
     let token;
     if (typeof window !== 'undefined') {
       token = window.localStorage.getItem('token');
@@ -242,17 +244,18 @@ const CommentsSection = ({pathID, nodeID, nodes}) => {
       <img src="/svgs/commentSVG.svg" className='w-6'/>
       <p>Comments: </p>
       </div>
-      <CreateComment pathID = {pathID} nodeID={nodeID} labelText='Create Comment' isPath={true} fetchData={fetchData}/>
+      <CreateComment pathID = {pathID} nodeID={nodeID} labelText='Create Comment' isPath={true} fetchData={fetchData} setErrorCode={setErrorCode}/>
       { nodes!==null && recommendations && recommendations.length>0 &&
       recommendations.map((recommendation, index)=>(
         
-        <CommentSectionCard key={index} isFrom={isFrom} recommendation={recommendation} pathID={pathID} nodeID={nodeID} nodes={nodes}/>
+        <CommentSectionCard key={index} isFrom={isFrom} recommendation={recommendation} pathID={pathID} nodeID={nodeID} nodes={nodes} setErrorCode={setErrorCode}/>
         
         
       ))
       
       }
     </div>
+    
     </>
   )
 }

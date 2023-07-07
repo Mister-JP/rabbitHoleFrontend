@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 const scrollAmount = 550; // Change this to adjust scroll amount
 
-function Scroller({refs, isExpanded, nodeID, commentsButton}) {
+function Scroller({refs, isExpanded, nodeID, commentsButton, setErrorCode}) {
   const scrollRef = useRef();
 
   const handleScroll = (direction) => {
@@ -42,7 +42,7 @@ function Scroller({refs, isExpanded, nodeID, commentsButton}) {
     {refs.length > 0 && refs.map((ref, index) => {
       return (
         <div className='min-w-[550px]'>
-          <RefCardsMD reference={ref} key={index} nodeID={nodeID} commentsButton={commentsButton}/>
+          <RefCardsMD reference={ref} key={index} nodeID={nodeID} commentsButton={commentsButton} setErrorCode={setErrorCode}/>
         </div>
       )
     })}

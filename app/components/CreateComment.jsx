@@ -5,7 +5,7 @@ import RefCardSM from './RefCardSM';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData}) => {
+const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData, setErrorCode}) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
@@ -46,34 +46,6 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData}
       }
     };
 
-    // const router = useRouter();
-    async function onStartGetSummary(){
-      try{
-        const token = localStorage.getItem("token");
-        const response = await axios.get('http://localhost:8000/getSummaryFromUserAndNode', {
-                params: {
-                    nodeID: nodeID
-                },
-                headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-                },
-            });
-            if(response.status ==200){
-            setSummary(response.data.Summary.content);
-            setLinks(response.data.Summary.links)
-            setimdbids(response.data.Summary?.imdbids.map(id => parseInt(id)))
-        }
-      }
-      catch (error) {
-        if(error.response?.status === 401){
-          if(isExpanded){
-            router.push("/login");
-          }
-        }
-      }
-
-    }
 
     // useEffect(()=>{
     //   onStartGetSummary();
@@ -104,6 +76,9 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData}
           setIsExpanded(false);
         //   router.push("/source/" + response.data.nodeID);
         } catch (error) {
+          if(error.response){
+            setErrorCode(error.response.status);
+          }
           console.error("Error during create source:", error);
         }
     }
@@ -132,6 +107,9 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData}
         fetchData();
       //   router.push("/source/" + response.data.nodeID);
       } catch (error) {
+        if(error.response){
+          setErrorCode(error.response.status);
+        }
         console.error("Error during create source:", error);
       }
     }

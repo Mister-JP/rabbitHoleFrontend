@@ -7,6 +7,7 @@ import Recommendation from '@/app/components/Recommendation';
 import Link from 'next/link';
 // import Recommendation from '../../../components/Recommendation';
 import Reference from '../components/Reference';
+import PopUpLoginRegister from '../components/PopUpLoginRegister';
 
 
 const SourcePage = ({ params: { id } }) => {
@@ -15,6 +16,7 @@ const SourcePage = ({ params: { id } }) => {
     const [error, setError] = useState();
     const [nodeScore, setNodeScore] = useState(0);
     const [isRecommendation, setIsRecommendation] = useState(true);
+    const[errorCode, setErrorCode] = useState(0);
 
     const handleScoreChange = async(newScore) =>{
       try{
@@ -31,7 +33,10 @@ const SourcePage = ({ params: { id } }) => {
         fetchNode()
         setNodeScore(newScore);
       }
-      catch{
+      catch(error){
+        if(error.response){
+          setErrorCode(error.response.status);
+        }
         console.log("Some error occured")
       }
     }
@@ -45,7 +50,6 @@ const SourcePage = ({ params: { id } }) => {
             params: { nodeID: id },
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
             },
             });
             setnode(response.data);
@@ -60,7 +64,8 @@ const SourcePage = ({ params: { id } }) => {
         } 
         catch (error) {
             console.log("here5")
-            setError('Error fetching source data');
+            console.log(error)
+            // setError('Error fetching source data');
             console.log("here6")
         }
     }
@@ -99,6 +104,7 @@ const SourcePage = ({ params: { id } }) => {
 
     return (
       <>
+      {errorCode===401 && <PopUpLoginRegister classname="z-100" setErrorCode={setErrorCode}/>}
         {data ? (
           <>
             <div className="flex m-5">
@@ -228,9 +234,10 @@ const SourcePage = ({ params: { id } }) => {
         ) : (
           <div>Loading...</div>
         )}
-        {isRecommendation && <Recommendation nodeID={id}/>}
+        {isRecommendation && <Recommendation nodeID={id} setErrorCode={setErrorCode}/>}
         {!isRecommendation && <Reference nodeID={id}/>}
         {error && <div className="text-red-500">{error}</div>}
+        
       </>
     );
 }

@@ -6,12 +6,13 @@ import FilterBar from './FilterBar';
 import CreateRecommendation from './CreateRecommendation';
 import RecommendationCard from './RecommendationCard';
 import axios from 'axios';
+import PopUpLoginRegister from './PopUpLoginRegister';
 
-const Recommendation = ({nodeID}) => {
+const Recommendation = ({nodeID, setErrorCode}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
     const [isScore, setIsScore] = useState(false);
-    const [isFrom, setIsFrom] = useState(true)
+    const [isFrom, setIsFrom] = useState(false)
     const [search, setSearch] = useState('');
     const [isUserLevel1, setIsUserLevel1] = useState(true);
     const [isUserLevel2, setIsUserLevel2] = useState(true);
@@ -25,6 +26,7 @@ const Recommendation = ({nodeID}) => {
     const [isCheckboxCheckedScore, setIsCheckboxCheckedScore] = useState(true);
     const [isCheckboxCheckedTime, setIsCheckboxCheckedTime] = useState(true);
     const [recommendations, setRecommendations] = useState(null);
+    
     let token;
     if (typeof window !== 'undefined') {
       token = window.localStorage.getItem('token');
@@ -165,6 +167,9 @@ const Recommendation = ({nodeID}) => {
           );
           setRecommendations(response.data.Source);
         } catch (error) {
+          if(error.response){
+            setErrorCode(error.response.status);
+          }
           console.error("There was an error!", error);
         }
       }
@@ -182,6 +187,9 @@ const Recommendation = ({nodeID}) => {
           );
           setRecommendations(response.data.Summaries);
         } catch (error) {
+          if(error.response){
+            setErrorCode(error.response.status);
+          }
           console.error("There was an error!", error);
         }
       }
@@ -241,16 +249,17 @@ const Recommendation = ({nodeID}) => {
       <img src="/svgs/Recommendation.svg" className='w-6'/>
       <p>Recommendations: </p>
       </div>
-      <CreateRecommendation nodeID = {nodeID} fetchData={fetchData}/>
+      <CreateRecommendation nodeID = {nodeID} fetchData={fetchData} setErrorCode={setErrorCode}/>
       { recommendations && recommendations.length>0 &&
       recommendations.map((recommendation, index)=>(
         
-        <RecommendationCard key={index} isFrom={isFrom} recommendation={recommendation} nodeID={nodeID}/>
+        <RecommendationCard key={index} isFrom={isFrom} recommendation={recommendation} nodeID={nodeID} setErrorCode={setErrorCode}/>
         
       ))
       
       }
     </div>
+    {/* {errorCode===401 && <PopUpLoginRegister setErrorCode={setErrorCode}/>} */}
     </>
   )
 }

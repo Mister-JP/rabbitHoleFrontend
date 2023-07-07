@@ -5,7 +5,7 @@ import RefCardSM from './RefCardSM';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-const CreateRecommendation = ({nodeID, fetchData}) => {
+const CreateRecommendation = ({nodeID, fetchData, setErrorCode}) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
@@ -48,36 +48,39 @@ const CreateRecommendation = ({nodeID, fetchData}) => {
 
     // const router = useRouter();
     async function onStartGetSummary(){
-      try{
-        const token = localStorage.getItem("token");
-        const response = await axios.get('http://localhost:8000/getSummaryFromUserAndNode', {
-                params: {
-                    nodeID: nodeID
-                },
-                headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-                },
-            });
-            if(response.status ==200){
-            setSummary(response.data.Summary.content);
-            setLinks(response.data.Summary.links)
-            setimdbids(response.data.Summary?.imdbids.map(id => parseInt(id)))
+      if(isExpanded){
+        try{
+          const token = localStorage.getItem("token");
+          const response = await axios.get('http://localhost:8000/getSummaryFromUserAndNode', {
+                  params: {
+                      nodeID: nodeID
+                  },
+                  headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                  },
+              });
+              if(response.status ==200){
+              setSummary(response.data.Summary.content);
+              setLinks(response.data.Summary.links)
+              setimdbids(response.data.Summary?.imdbids.map(id => parseInt(id)))
+          }
         }
-      }
-      catch (error) {
-        if(error.response.status == 401){
-          if(isExpanded){
-            router.push("/login");
+        catch (error) {
+          if(error.response){
+            setErrorCode(error.response.status);
+          }
+          if(error.response.status == 401){
+            console.log('login')
           }
         }
       }
 
     }
 
-    useEffect(()=>{
-      onStartGetSummary();
-    }, [])
+    // useEffect(()=>{
+    //   onStartGetSummary();
+    // }, [isExpanded])
 
     async function onSubmitCreateSummary() {
       try {
@@ -103,6 +106,9 @@ const CreateRecommendation = ({nodeID, fetchData}) => {
         fetchData();
       //   router.push("/source/" + response.data.nodeID);
       } catch (error) {
+        if(error.response){
+          setErrorCode(error.response.status);
+        }
         console.error("Error during create source:", error);
       }
   }

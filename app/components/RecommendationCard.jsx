@@ -5,7 +5,7 @@ import api from '../api/LocalApi';
 import RefCardsMD from './RefCardsMD';
 import References from './References';
 
-const RecommendationCard = ({isFrom, recommendation, nodeID}) => {
+const RecommendationCard = ({isFrom, recommendation, nodeID, setErrorCode}) => {
 
 //   console.log(recommendation)
   const [recommendationScore, setRecommendationScore] = useState(0);
@@ -34,9 +34,6 @@ const RecommendationCard = ({isFrom, recommendation, nodeID}) => {
     } 
     catch (error) {
         console.log(error)
-        console.log("here5")
-        setError('Error fetching source data');
-        console.log("here6")
     }
 }
 
@@ -56,7 +53,6 @@ const fetchRefs = async () =>{
     catch (error) {
         console.log(error)
         console.log("here5")
-        setError('Error fetching source data');
         console.log("here6")
     }
 }
@@ -74,9 +70,13 @@ const handleScoreChange = async(newScore) =>{
       }
       );
       fetchRecScore()
+      console.log(response.status)
     //   setNodeScore(newScore);
     }
-    catch{
+    catch(error){
+        if(error.response){
+            setErrorCode(error.response.status);
+          }
       console.log("Some error occured")
     }
   }
@@ -181,7 +181,7 @@ const handleScoreChange = async(newScore) =>{
                 />
               </div>
             )}
-        <References nodeID={nodeID} refs={refs} commentsButton={true}/>
+        <References nodeID={nodeID} refs={refs} commentsButton={true} setErrorCode={setErrorCode}/>
     </div>
   )
 }

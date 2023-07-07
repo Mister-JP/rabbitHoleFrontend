@@ -6,7 +6,7 @@ import Scroller from './ScrollComponent';
 
 
 
-const References = ({refs, nodeID, commentsButton}) => {
+const References = ({refs, nodeID, commentsButton, setErrorCode}) => {
     const [isExpanded, setIsExpanded] = useState(true);
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
     
@@ -31,7 +31,7 @@ const References = ({refs, nodeID, commentsButton}) => {
       <div className="relative">
       </div>
       <div>
-      <Scroller refs={refs} isExpanded={isExpanded} nodeID={nodeID} commentsButton={commentsButton}/>
+      <Scroller refs={refs} isExpanded={isExpanded} nodeID={nodeID} commentsButton={commentsButton} setErrorCode={setErrorCode}/>
       </div>
       {/* <div className={`transition-all duration-500 ease-in-out mb-5 ${isExpanded ? 'h-auto opacity-100' : 'overflow-hidden p-0 h-0 opacity-50'}`}>
         {refs.length>0 && refs.map((ref, index) =>{

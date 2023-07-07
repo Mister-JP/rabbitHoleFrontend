@@ -8,14 +8,14 @@ import Link from 'next/link';
 
 
 
-const RefCardsMD = ({reference, nodeID, commentsButton}) => {
+const RefCardsMD = ({reference, nodeID, commentsButton, setErrorCode}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [data, setData] = useState(null);
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
     const [nodeScore, setNodeScore] = useState(0);
     const [totalScore, setTotalScore] = useState(null);
     const router = useRouter();
-    const [pathID, setPathID] = useState('');
+    const [pathID, setPathID] = useState(null);
     const [enableComment, setEnableComment] = useState(true);
     // console.log(reference)
     // console.log(nodeID)
@@ -30,8 +30,8 @@ const RefCardsMD = ({reference, nodeID, commentsButton}) => {
     useEffect(()=>{
         const fetchData = async () => {
             try{
-                await fetchMovieDetails();
                 await fetchPathID();
+                await fetchMovieDetails();
                 await fetchUserNodescore();
                 
             }
@@ -57,30 +57,26 @@ const RefCardsMD = ({reference, nodeID, commentsButton}) => {
 
     const fetchPathID = async () => {
         try{
-            const token = localStorage.getItem('token');
+            const userID = localStorage.getItem('userID');
+            
             const pathID = await api.get('/getPathID', {
-                params: { startNodeID: nodeID, endNodeID: reference.id },
+                params: { startNodeID: nodeID, endNodeID: reference.id, userID: userID},
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
                 },
             });
             setPathID(pathID.data.pathID);
         }
         catch(e){
+            if(e.response){
+                setErrorCode(e.response.status);
+              }
             console.error(e);
         }
     }
 
     const fetchUserNodescore = async() =>{
         const token = localStorage.getItem('token');
-        const score = await api.get('/getUserScoreNode', {
-            params: { nodeID: reference.id },
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        });
         const nodeScore = await api.get('/getScoreNode', {
             params: {nodeID: reference.id},
             headers: {
@@ -88,6 +84,13 @@ const RefCardsMD = ({reference, nodeID, commentsButton}) => {
             }
         });
         setTotalScore(nodeScore.data.score);
+        const score = await api.get('/getUserScoreNode', {
+            params: { nodeID: reference.id },
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
         setNodeScore(score.data.Score);
     }
 
@@ -106,7 +109,10 @@ const RefCardsMD = ({reference, nodeID, commentsButton}) => {
           fetchUserNodescore()
         //   setNodeScore(newScore);
         }
-        catch{
+        catch(error){
+            if(error.response){
+                setErrorCode(error.response.status);
+              }
           console.log("Some error occured")
         }
       }

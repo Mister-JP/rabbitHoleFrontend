@@ -5,13 +5,14 @@ import api from '@/app/api/LocalApi'
 import RefCardsMD from '@/app/components/RefCardsMD'
 import CommentsSection from '@/app/components/CommentsSection'
 import CreateComment from '@/app/components/CreateComment'
+import PopUpLoginRegister from '@/app/components/PopUpLoginRegister'
 
 const commentsPage = ({ params: { pathID, nodeID } }) => {
   const [nodes, setNodes] = useState(null);
   const [totalScore, setTotalScore] = useState(null);
   const [nodeScore, setNodeScore] = useState(null);
   const [isComments, setIsComments] = useState(true);
-
+  const[errorCode, setErrorCode] = useState(0);
 
   const handleScoreChange = async(newScore) =>{
     try{
@@ -29,7 +30,10 @@ const commentsPage = ({ params: { pathID, nodeID } }) => {
       fetchPathScoreByUser()
     //   setNodeScore(newScore);
     }
-    catch{
+    catch(error){
+        if(error.response){
+            setErrorCode(error.response.status);
+          }
       console.log("Some error occured")
     }
   }
@@ -47,7 +51,7 @@ const commentsPage = ({ params: { pathID, nodeID } }) => {
         setTotalScore(response.data.score);
     } 
     catch (error) {
-        setError('Error fetching source data');
+        console.log(error)
     }
   }
 
@@ -66,7 +70,7 @@ const commentsPage = ({ params: { pathID, nodeID } }) => {
         setNodeScore(response.data.score);
     } 
     catch (error) {
-        setError('Error fetching source data');
+        console.log(error)
     }
   }
 
@@ -105,12 +109,13 @@ const commentsPage = ({ params: { pathID, nodeID } }) => {
   }, [pathID])
   return (
     <>
+    {errorCode===401 && <PopUpLoginRegister setErrorCode={setErrorCode}/>}
     <div className='flex flex-row justify-between'>
     {nodes!==null && nodes.length > 0 &&
         nodes.map((node, index)=>{
             return(
                     <>
-                    <RefCardsMD reference={node} nodeID={nodeID} commentsButton={false}/>
+                    <RefCardsMD reference={node} nodeID={nodeID} commentsButton={false} setErrorCode={setErrorCode}/>
                     {index===0 && <img src='/svgs/pathSVG.svg' className='w-12'/>}
                     </>
                 )
@@ -211,7 +216,7 @@ const commentsPage = ({ params: { pathID, nodeID } }) => {
         Only Reference
         </button>
     </div>
-    {isComments && nodes!==null && <CommentsSection pathID={pathID} nodeID={nodeID} nodes={nodes}/>}
+    {isComments && nodes!==null && <CommentsSection pathID={pathID} nodeID={nodeID} nodes={nodes} setErrorCode={setErrorCode}/>}
     </>
   )
 }

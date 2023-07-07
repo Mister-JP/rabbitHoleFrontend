@@ -8,7 +8,7 @@ import CreateComment from './CreateComment';
 import FilterBar from './FilterBar';
 import axios from 'axios';
 
-const CommentSectionCard = ({pathID, isFrom, recommendation, nodeID, nodes}) => {
+const CommentSectionCard = ({pathID, isFrom, recommendation, nodeID, nodes, setErrorCode}) => {
 
 //   console.log(recommendation)
   const [recommendationScore, setRecommendationScore] = useState(0);
@@ -216,7 +216,6 @@ const CommentSectionCard = ({pathID, isFrom, recommendation, nodeID, nodes}) => 
     } 
     catch (error) {
         console.log(error)
-        setError('Error fetching source data');
     }
 }
 
@@ -234,7 +233,6 @@ const fetchRefs = async () =>{
     } 
     catch (error) {
         console.log(error)
-        setError('Error fetching source data');
     }
 }
 
@@ -253,7 +251,10 @@ const handleScoreChange = async(newScore) =>{
       fetchRecScore()
     //   setNodeScore(newScore);
     }
-    catch{
+    catch(error){
+      if(error.response){
+        setErrorCode(error.response.status);
+      }
       console.log("Some error occured")
     }
   }
@@ -363,9 +364,9 @@ const handleScoreChange = async(newScore) =>{
               </div>
             )}
         <div className='ml-5 w-5/6'>
-        <CreateComment labelText='Reply' isPath={false} commentID={recommendation.id} nodeID={nodeID} fetchData={fetchDataSubComments}/>
+        <CreateComment labelText='Reply' isPath={false} commentID={recommendation.id} nodeID={nodeID} fetchData={fetchDataSubComments} setErrorCode={setErrorCode}/>
         </div>
-        <References nodeID={nodeID} refs={refs} commentsButton={false}/>
+        <References nodeID={nodeID} refs={refs} commentsButton={false} setErrorCode={setErrorCode}/>
         
     </div>
     { nodes!==null && recommendations && recommendations.length>0 &&
@@ -383,7 +384,7 @@ const handleScoreChange = async(newScore) =>{
           {nodes !== null && recommendations && recommendations.length > 0 &&
             recommendations.map((rec, i) => (
               <div key={i}>
-                <CommentSectionCard isFrom={isFrom} recommendation={rec} pathID={pathID} nodeID={nodeID} nodes={nodes} />
+                <CommentSectionCard isFrom={isFrom} recommendation={rec} pathID={pathID} nodeID={nodeID} nodes={nodes} setErrorCode={setErrorCode}/>
               </div>
             ))}
         </div>
