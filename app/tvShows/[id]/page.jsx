@@ -6,8 +6,8 @@ import axios from 'axios';
 import Recommendation from '@/app/components/Recommendation';
 import Link from 'next/link';
 // import Recommendation from '../../../components/Recommendation';
-import Reference from '../components/Reference';
-import PopUpLoginRegister from '../components/PopUpLoginRegister';
+import Reference from '@/app/components/Reference';
+import PopUpLoginRegister from '@/app/components/PopUpLoginRegister';
 
 
 const SourcePage = ({ params: { id } }) => {
@@ -52,7 +52,6 @@ const SourcePage = ({ params: { id } }) => {
                 'Content-Type': 'application/json',
             },
             });
-            // console.log(response.data)
             setnode(response.data);
             const score = await api.get('/getUserScoreNode', {
                 params: { nodeID: id },
@@ -87,12 +86,11 @@ const SourcePage = ({ params: { id } }) => {
     useEffect(() => {
         const fetchMovie = async () => {
           const bearerToken = process.env.NEXT_PUBLIC_BEARER_TOKEN;
-          // console.log(node)
           try {
-            const response = await axios.get('https://api.themoviedb.org/3/movie/' + node.imdbid, {
+            const response = await axios.get('https://api.themoviedb.org/3/tv/' + node.imdbid, {
               headers: { Authorization: `Bearer ${bearerToken}` },
             });
-            // console.log(response.data)
+            console.log(response.data)
             setData(response.data);
           } catch (error) {
             console.error(error);
@@ -105,27 +103,26 @@ const SourcePage = ({ params: { id } }) => {
         }
       }, [node]);
 
-      // useEffect(()=>{
-      //   console.log(data);
-      // },[data])
+      useEffect(()=>{
+        console.log(data);
+      },[data])
 
     return (
       <>
       {errorCode===401 && <PopUpLoginRegister classname="z-100" setErrorCode={setErrorCode}/>}
         {data ? (
           <>
-          <h1>NOT ACTIVEEE</h1>
             <div className="flex m-5">
               {data && data.poster_path && (
                 <img
                   src={`https://image.tmdb.org/t/p/w200${data.poster_path}`}
-                  alt={data.original_title}
+                  alt={data.original_name}
                   className="w-64 mr-2"
                 />
               )}
               <div className="bg-white shadow rounded-lg p-6 w-full">
                 <h2 className="text-2xl font-semibold text-gray-800 ">
-                  {data.title}
+                  {data.name}
                 </h2>
                 <p className="text-gray-700 mb-4">
                   {data.release_date && data.release_date.substring(0, 4)}

@@ -46,9 +46,18 @@ const RefCardsMD = ({reference, nodeID, commentsButton, setErrorCode}) => {
     const fetchMovieDetails = async () => {
         try {
             const bearerToken = process.env.NEXT_PUBLIC_BEARER_TOKEN;
-            const response = await axios.get('https://api.themoviedb.org/3/movie/' + reference.imdbid, {
-              headers: { Authorization: `Bearer ${bearerToken}` },
-            });
+            let response = null;
+            if(reference.isMovie===true){
+                 response = await axios.get('https://api.themoviedb.org/3/movie/' + reference.imdbid, {
+                    headers: { Authorization: `Bearer ${bearerToken}` },
+                    });
+            }
+            if(reference.isMovie===false){
+                 response = await axios.get('https://api.themoviedb.org/3/tv/' + reference.imdbid, {
+                    headers: { Authorization: `Bearer ${bearerToken}` },
+                    });
+            }
+            
             setData(response.data);
           } catch (error) {
             console.error(error);
@@ -117,14 +126,20 @@ const RefCardsMD = ({reference, nodeID, commentsButton, setErrorCode}) => {
         }
       }
 
+    useEffect(()=>{
+        console.log(reference)
+    }, [reference])
+
 
   return (
     <>
     <div className='m-3 flex flex-col justify-between rounded-[15px] overflow-hidden border border-black w-[550px] h-[220px]'>
     <div className='m-3 flex flex-row justify-between overflow-hidden'>
-        {data!==null && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_title} className='scale-100'/>}
+        {data!==null && reference.isMovie===true && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_title} className='scale-100'/>}
+        {data!==null && reference.isMovie===false  && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_name} className='scale-100'/>}
         <div className='w-full flex flex-col justify-between'>
-        {data!==null && <p className='m-2 p-1'>{data.original_title}</p>}
+        {data!==null && reference.isMovie===true && <p className='m-2 p-1'>{data.original_title}</p>}
+        {data!==null && reference.isMovie===false && <p className='m-2 p-1'>{data.original_name}</p>}
         <div className="m-2 p-1 flex space-between space-x-4">
             <div className="flex border rounded-full p-1">
             👶: {totalScore && totalScore[0]}
@@ -210,7 +225,7 @@ const RefCardsMD = ({reference, nodeID, commentsButton, setErrorCode}) => {
             <div class="border-r h-6 border-gray-200"></div>
             <div className='flex flex-row items-center'>
             <img src='/svgs/Recommendation.svg' className='m-1 w-6'/>
-            <Link href={`/${reference.id}`} className="text-gray-600 text-sm">Recommendation</Link>
+            <Link href={`${reference.isMovie===true? '/movie': '/tvShows'}/${reference.id}`} className="text-gray-600 text-sm">Recommendation</Link>
             </div>
             </div>
     </div>

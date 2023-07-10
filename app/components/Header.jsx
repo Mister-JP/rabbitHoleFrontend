@@ -40,11 +40,22 @@ const Header = () => {
     setErrorCode(401);
   };
 
-  const handleSearchClick = async (movie, router) => {
+  const handleSearchClick = async (movie, router, isMovie) => {
     try {
-      const response = await api.get(`/getSourceByLink?offset=1&limit=1&link=${movie.original_title}&imdbid=${movie.id}`);
+      let response = null;
+      if(isMovie){
+       response = await api.get(`/getSourceByLink?offset=1&limit=1&link=${movie.original_title}&imdbid=${movie.id}&isMovie=1`);
+      }
+      else{
+         response = await api.get(`/getSourceByLink?offset=1&limit=1&link=${movie.original_name}&imdbid=${movie.id}&isMovie=0`);
+      }
       if (response.data && response.data.Source) {
-        router.push(`/${response.data.Source}`);
+        if(isMovie){
+           router.push(`/movie/${response.data.Source}`);
+      }
+      else{
+        router.push(`/tvShows/${response.data.Source}`);
+   }
       }
     } catch (error) {
       console.error("API request failed: ", error);
@@ -62,13 +73,16 @@ const Header = () => {
     <>
     {errorCode===401 && <PopUpLoginRegister formP={formType} setErrorCode={setErrorCode}/>}
     <div className="m-5 ml-5 mr-5 mx-auto flex space-between items-center">
-      <h1 className="font-plusJakarta text-3xl font-semibold">
+      <h1 className="font-plusJakarta text-2xl md:text-3xl font-semibold">
         <Link href="/" className="hover:text-gray-300 transition duration-200">RabbitHole</Link>
       </h1>
       <SearchBar handleSearchClick={handleSearchClick}/>
-      <nav className="flex space-x-6">
-        <Link href="/createSource" className="py-2 px-4 rounded hover:bg-white hover:text-indigo-600 transition duration-200">Go to Source</Link>
-        <Link href="/about" className="py-2 px-4 rounded hover:bg-white hover:text-indigo-600 transition duration-200">About</Link>
+      <nav className="flex space-x-6 items-center">
+      <Link href="/" className="py-2 px-4 rounded hover:bg-black hover:text-white transition duration-200 h-full text-center">Home</Link>
+      <Link href="/popular" className="py-2 px-4 rounded hover:bg-black hover:text-white transition duration-200">Popular</Link>
+      <Link href="/topRated" className="py-2 px-4 rounded hover:bg-black hover:text-white transition duration-200">Top Rated</Link>
+      <Link href="/genre" className="py-2 px-4 rounded hover:bg-black hover:text-white transition duration-200">Browse by Genere</Link>
+        <Link href="/about" className="py-2 px-4 rounded hover:bg-black hover:text-white transition duration-200">About</Link>
         <div className="flex items-center space-x-2">
           {userEmail ? (
             <div onMouseEnter={() => setShowLogout(true)} onMouseLeave={() => setShowLogout(false)}>

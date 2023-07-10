@@ -8,9 +8,12 @@ import CreateComment from './CreateComment';
 import FilterBar from './FilterBar';
 import axios from 'axios';
 
-const CommentSectionCard = ({pathID, isFrom, recommendation, nodeID, nodes, setErrorCode}) => {
+const CommentSectionCard = ({pathID, isFrom=false, recommendation, nodeID, nodes, setErrorCode, enableSubcomments=true}) => {
 
-//   console.log(recommendation)
+  // console.log(recommendation)
+  // console.log(nodes)
+  // console.log(recommendation.content," ", enableSubcomments)
+  
   const [recommendationScore, setRecommendationScore] = useState(0);
   const [totalScore, setTotalScore] = useState(null);
   const [refs, setRefs] = useState([]);
@@ -221,13 +224,18 @@ const CommentSectionCard = ({pathID, isFrom, recommendation, nodeID, nodes, setE
 
 const fetchRefs = async () =>{
     try {
-        const references = await api.get('/getRefsFromComment', {
-            params: { commentID: recommendation.id, startnode_id: nodes[0].id, endnode_id: nodes[1].id },
+      let references = null
+      if(nodes!==null){
+        references = await api.get('/getRefsFromComment', {
+            params: { commentID: recommendation?.id, startnode_id: nodes[0].id, endnode_id: nodes[1].id },
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        setRefs(references.data.Refs);
+      }
+        
+        // console.log(references?.data.Refs)
+        setRefs(references?.data.Refs);
         // setRecommendationScore(score.data.score);
         // console.log("for nodeid: ", recommendation.id, "score = ", recommendationScore)
     } 
@@ -366,10 +374,10 @@ const handleScoreChange = async(newScore) =>{
         <div className='ml-5 w-5/6'>
         <CreateComment labelText='Reply' isPath={false} commentID={recommendation.id} nodeID={nodeID} fetchData={fetchDataSubComments} setErrorCode={setErrorCode}/>
         </div>
-        <References nodeID={nodeID} refs={refs} commentsButton={false} setErrorCode={setErrorCode}/>
+        {refs!==null && refs && refs.length>0 && <References nodeID={nodeID} refs={refs} commentsButton={false} setErrorCode={setErrorCode}/>}
         
     </div>
-    { nodes!==null && recommendations && recommendations.length>0 &&
+    { enableSubcomments===true && nodes!==null && recommendations && recommendations.length>0 &&
     <>
     <div className={`flex flex-row space-x-4 cursor-pointer mt-3`} onClick={handleToggle}>
         <img src='/svgs/DropDown.svg' className={`w-4 transform ${rotationClass}`}/>
@@ -378,17 +386,17 @@ const handleScoreChange = async(newScore) =>{
     <div className={`transition-all w-5/6 duration-500 ease-in-out ml-5 mb-5 ${isExpanded ? 'h-auto opacity-100' : 'overflow-hidden p-0 h-0 opacity-50'}`}>
     <FilterBar key={recommendation.id} primary="Score" secondary="Time" primaryState={isScore} setPrimaryState={setIsScore} search={search} setSearch={setSearch} isCheckboxCheckedScore={isCheckboxCheckedScore} setIsCheckboxCheckedScore={setIsCheckboxCheckedScore} isCheckboxCheckedTime={isCheckboxCheckedTime} setIsCheckboxCheckedTime={setIsCheckboxCheckedTime} isUserLevel1={isUserLevel1} setIsUserLevel1={setIsUserLevel1} isUserLevel2={isUserLevel2} setIsUserLevel2={setIsUserLevel2} isUserLevel3={isUserLevel3} setIsUserLevel3={setIsUserLevel3} isUserLevel4={isUserLevel4} setIsUserLevel4={setIsUserLevel4} isUserLevel5={isUserLevel5} setIsUserLevel5={setIsUserLevel5} isDesc={isDesc} setIsDesc={setIsDesc} isNewest={isNewest} setIsNewest={setIsNewest} selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
     </div></>}
-    <div className='flex'>
+    {enableSubcomments===true && <div className='flex'>
         <div className='border-l-2 border-gray-100 hover:border-gray-700 h-30 transition-all duration-200 ml-1'></div>
         <div className='ml-4 w-full'>
-          {nodes !== null && recommendations && recommendations.length > 0 &&
+          {enableSubcomments===true && nodes !== null && recommendations && recommendations.length > 0 &&
             recommendations.map((rec, i) => (
               <div key={i}>
                 <CommentSectionCard isFrom={isFrom} recommendation={rec} pathID={pathID} nodeID={nodeID} nodes={nodes} setErrorCode={setErrorCode}/>
               </div>
             ))}
         </div>
-      </div>
+      </div>}
     </>
   )
 }

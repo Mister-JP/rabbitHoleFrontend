@@ -6,8 +6,9 @@ import axios from 'axios';
 import Recommendation from '@/app/components/Recommendation';
 import Link from 'next/link';
 // import Recommendation from '../../../components/Recommendation';
-import Reference from '../components/Reference';
-import PopUpLoginRegister from '../components/PopUpLoginRegister';
+// import Reference from '@/components/Reference';
+import Reference from '@/app/components/Reference';
+import PopUpLoginRegister from '@/app/components/PopUpLoginRegister';
 
 
 const SourcePage = ({ params: { id } }) => {
@@ -114,7 +115,6 @@ const SourcePage = ({ params: { id } }) => {
       {errorCode===401 && <PopUpLoginRegister classname="z-100" setErrorCode={setErrorCode}/>}
         {data ? (
           <>
-          <h1>NOT ACTIVEEE</h1>
             <div className="flex m-5">
               {data && data.poster_path && (
                 <img

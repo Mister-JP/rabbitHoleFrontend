@@ -11,6 +11,7 @@ const CreateRecommendation = ({nodeID, fetchData, setErrorCode}) => {
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
     const [links, setLinks] = useState([]);
     const [imdbids, setimdbids] = useState([]);
+    const [isMovies, setIsMovies] = useState([]);
     const [deletesArr, setDeletes] = useState([]);
     const [summary, setSummary] = useState("");
     const router = useRouter();
@@ -24,24 +25,33 @@ const CreateRecommendation = ({nodeID, fetchData, setErrorCode}) => {
         onStartGetSummary()
     }, [isExpanded])
 
-    const handleSearchClick = (movie) => {
+    const handleSearchClick = (movie,id,isMovie) => {
       // const response = await api.get(`/getSourceByLink?offset=1&limit=1&link=${movie.original_title}&imdbid=${movie.id}`);
-      console.log(movie)
-      setLinks([...links, movie.original_title]);
+      console.log(movie, isMovie)
+      if(isMovie){
+        setLinks([...links, movie.original_title]);
+      }
+      else{
+        setLinks([...links, movie.original_name]);
+      }
       
+      setIsMovies([...isMovies, isMovie]);
       setimdbids([...imdbids, movie.id]);
     }
 
 
-    const handleRemoveMovie = (imdbid) => {
+    const handleRemoveMovie = (imdbid, isMovie) => {
       var index = imdbids.indexOf(imdbid);
       if (index !== -1) {
         const newLinks = [...links];
         const newImdbids = [...imdbids];
+        const newIsMovies = [...isMovies];
         const linkRemoved = newLinks.splice(index, 1);
         const imdbidRemoved = newImdbids.splice(index, 1);
+        const isMoviesRemoved = newIsMovies.splice(index, 1);
         setLinks(newLinks);
         setimdbids(newImdbids);
+        setIsMovies(newIsMovies);
         setDeletes([...deletesArr, linkRemoved[0]]);
       }
     };
@@ -64,6 +74,7 @@ const CreateRecommendation = ({nodeID, fetchData, setErrorCode}) => {
               setSummary(response.data.Summary.content);
               setLinks(response.data.Summary.links)
               setimdbids(response.data.Summary?.imdbids.map(id => parseInt(id)))
+              setIsMovies(response.data.Summary?.isMovies)
           }
         }
         catch (error) {
@@ -93,7 +104,8 @@ const CreateRecommendation = ({nodeID, fetchData, setErrorCode}) => {
             links,
             imdbids,
             nodeID,
-            deletes: deletesArr 
+            deletes: deletesArr,
+            isMovies
           },
           {
             headers: {
@@ -133,7 +145,7 @@ const CreateRecommendation = ({nodeID, fetchData, setErrorCode}) => {
             
         </div>
         <div className='m-2 flex flex-wrap  flex-row space-x-2 items-center'>
-          <RefCardSM imdbids = {imdbids} handleRemoveMovie={handleRemoveMovie} isExpanded={isExpanded}/>
+          <RefCardSM imdbids = {imdbids} handleRemoveMovie={handleRemoveMovie} isExpanded={isExpanded} isMovies={isMovies}/>
         </div>
         <div className='m-2 flex flex-row-reverse'>
         <button className='border border-black bg-black text-white font-bold rounded-full px-5 transition duration-300 ease-in-out hover:bg-gray-800 transform hover:scale-105' onClick={onSubmitCreateSummary}>Post</button>

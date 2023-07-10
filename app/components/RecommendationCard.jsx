@@ -28,6 +28,8 @@ const RecommendationCard = ({isFrom, recommendation, nodeID, setErrorCode}) => {
                 'Content-Type': 'application/json'
             }
         });
+        
+        // console.log("node - ", recommendation.content, score.data.score, summary.data.score)
         setTotalScore(summary.data.score);
         setRecommendationScore(score.data.score);
         // console.log("for nodeid: ", recommendation.id, "score = ", recommendationScore)
@@ -70,7 +72,7 @@ const handleScoreChange = async(newScore) =>{
       }
       );
       fetchRecScore()
-      console.log(response.status)
+    //   console.log(response.status)
     //   setNodeScore(newScore);
     }
     catch(error){

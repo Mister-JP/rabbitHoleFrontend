@@ -11,6 +11,7 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
     const [rotationClass, setRotationClass] = useState('animate-spin--0')
     const [links, setLinks] = useState([]);
     const [imdbids, setimdbids] = useState([]);
+    const [isMovies, setIsMovies] = useState([]);
     const [deletesArr, setDeletes] = useState([]);
     const [summary, setSummary] = useState("");
     const router = useRouter();
@@ -24,11 +25,17 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
         // onStartGetSummary()
     }, [isExpanded])
 
-    const handleSearchClick = (movie) => {
+    const handleSearchClick = (movie, id, isMovie) => {
       // const response = await api.get(`/getSourceByLink?offset=1&limit=1&link=${movie.original_title}&imdbid=${movie.id}`);
       console.log(movie)
-      setLinks([...links, movie.original_title]);
+      if(isMovie){
+        setLinks([...links, movie.original_title]);
+      }
+      else{
+        setLinks([...links, movie.original_name]);
+      }
       
+      setIsMovies([...isMovies, isMovie]);
       setimdbids([...imdbids, movie.id]);
     }
 
@@ -38,10 +45,13 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
       if (index !== -1) {
         const newLinks = [...links];
         const newImdbids = [...imdbids];
+        const newIsMovies = [...isMovies];
         const linkRemoved = newLinks.splice(index, 1);
         const imdbidRemoved = newImdbids.splice(index, 1);
+        const isMoviesRemoved = newIsMovies.splice(index, 1);
         setLinks(newLinks);
         setimdbids(newImdbids);
+        setIsMovies(newIsMovies);
         setDeletes([...deletesArr, linkRemoved[0]]);
       }
     };
@@ -64,7 +74,8 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
               imdbids,
               nodeID,
               deletes: deletesArr,
-              pathID
+              pathID,
+              isMovies
             },
             {
               headers: {
@@ -94,7 +105,8 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
             imdbids,
             nodeID,
             deletes: deletesArr,
-            underCommentID: commentID
+            underCommentID: commentID,
+            isMovies
           },
           {
             headers: {
@@ -135,7 +147,7 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
             
         </div>
         <div className='m-2 flex flex-wrap  flex-row space-x-2 items-center'>
-          <RefCardSM imdbids = {imdbids} handleRemoveMovie={handleRemoveMovie} isExpanded={isExpanded}/>
+          <RefCardSM imdbids = {imdbids} handleRemoveMovie={handleRemoveMovie} isExpanded={isExpanded} isMovies={isMovies}/>
         </div>
         <div className='m-2 flex flex-row-reverse'>
         <button className='border border-black bg-black text-white font-bold rounded-full px-5 transition duration-300 ease-in-out hover:bg-gray-800 transform hover:scale-105' onClick={onSubmitCreateSummary}>Post</button>
