@@ -90,9 +90,9 @@ const HomePage = () => {
     setSortorder(sortOrder === 1 ? 0 : 1);
   };
 
-  // const handleSubmit = () => {
-  //   console.log("clicked");
-  // };
+  const handleSubmit = () => {
+    console.log("clicked");
+  };
 
   let token;
   if (typeof window !== "undefined") {
