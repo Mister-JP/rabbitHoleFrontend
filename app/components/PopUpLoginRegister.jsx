@@ -32,8 +32,9 @@ const PopUpLoginRegister = ({setErrorCode, formP = "login" }) => {
             headers: { "Content-Type": "application/json" },
           }
         );
-        console.log(response.data.message);
-        router.push("/login");
+        // console.log(response.data.message);
+        setForm('login')
+        // router.push("/login");
 
     } catch (error) {
         if(error.response){
@@ -55,7 +56,7 @@ const PopUpLoginRegister = ({setErrorCode, formP = "login" }) => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log(response.data.message);
+    //   console.log(response.data.message);
       setErrorCode(response.status)
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userID", response.data.userID);
