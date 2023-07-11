@@ -114,6 +114,11 @@ const HomeCommentCard = ({comment, nodeID, setErrorCode}) => {
       <>
       <div className="m-1 md:m-5 border border-black p-0 md:p-5 rounded-md">
       {/* {errorCode===401 && <PopUpLoginRegister setErrorCode={setErrorCode}/>} */}
+      <div className='flex flex-col items-center'>
+            <p className='font-plusJakarta text-2xl md:text-3xl font-semibold mb-5 decoration-gray-50'>
+                Comments on the recommendations between:
+            </p>
+          </div>
       <div className='flex flex-row justify-between items-center'>
       {nodes!==null && nodes.length > 0 &&
           nodes.map((node, index)=>{

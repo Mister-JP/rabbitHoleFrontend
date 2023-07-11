@@ -4,7 +4,7 @@ const ToggleButton = ({primary, secondary, primaryState, setPrimaryState, w}) =>
   return (
     <div className="flex">
               <button
-                className={`px-4 py-2 w-[90px] rounded-l-full ${
+                className={`px-4 py-2 rounded-l-full ${
                     primaryState
                     ? "dark:bg-black dark:text-white"
                     : "dark:bg-gray-300 dark:text-black"
@@ -14,7 +14,7 @@ const ToggleButton = ({primary, secondary, primaryState, setPrimaryState, w}) =>
                 {primary}
               </button>
               <button
-                className={`px-4 py-2 w-[90px] rounded-r-full ${
+                className={`px-4 py-2 rounded-r-full ${
                   !primaryState
                     ? "dark:bg-black dark:text-white"
                     : "dark:bg-gray-300 dark:text-black"

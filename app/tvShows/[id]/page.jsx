@@ -222,7 +222,7 @@ const SourcePage = ({ params: { id } }) => {
                 }`}
                 onClick={() => setIsRecommendation(true)}
               >
-                Recommendation
+                Human Recommendation
               </button>
               <button
                 className={`px-4 py-2 rounded-r-full ${

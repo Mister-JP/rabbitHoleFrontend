@@ -140,7 +140,14 @@ const handleCardClick = () =>{
   return (
     <>
       <div className="m-1 md:m-5 border border-black p-0 md:p-5 rounded-md">
+      <div className='flex flex-col items-center'>
+            <p className='font-plusJakarta text-2xl md:text-3xl font-semibold mb-5 decoration-gray-50'>
+                If you liked:
+            </p>
+          </div>
+
         <div className="flex flex-col md:flex-row w-full items-center">
+            
           {data !== null && data.poster_path && data.poster_path!==null && (
             <img
               src={`https://image.tmdb.org/t/p/w200${data.poster_path}`}
@@ -276,6 +283,9 @@ const handleCardClick = () =>{
             </div>
           </div>
         </div>
+        <p className='font-plusJakarta text-2xl md:text-3xl font-semibold mb-5 decoration-gray-50'>
+            Human suggestion to watch next:
+            </p>
         { recommendation && 
           <RecommendationCard key={recommendation.summary.id} isFrom={false} recommendation={recommendation.summary} nodeID={recommendation.node.id} setErrorCode={setErrorCode}/>
         }

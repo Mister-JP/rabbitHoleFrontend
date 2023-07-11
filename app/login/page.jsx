@@ -21,7 +21,7 @@ const LoginPage = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log(response.data.message);
+      // console.log(response.data.message);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userID", response.data.userID);
     } catch (error) {

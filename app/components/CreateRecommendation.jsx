@@ -27,7 +27,7 @@ const CreateRecommendation = ({nodeID, fetchData, setErrorCode}) => {
 
     const handleSearchClick = (movie,id,isMovie) => {
       // const response = await api.get(`/getSourceByLink?offset=1&limit=1&link=${movie.original_title}&imdbid=${movie.id}`);
-      console.log(movie, isMovie)
+      // console.log(movie, isMovie)
       if(isMovie){
         setLinks([...links, movie.original_title]);
       }
@@ -137,6 +137,16 @@ const CreateRecommendation = ({nodeID, fetchData, setErrorCode}) => {
       </div>
       <div className={`transition-all duration-500 ease-in-out ${isExpanded ? 'h-auto opacity-100' : 'overflow-hidden p-0 h-0 opacity-0'}`}>
       <div className={`flex flex-col justify-between border border-black mt-1 rounded-lg p-2 transition-all duration-500 ease-in-out`}>
+        <p className='p-1'>
+          Describe your recommendation on what to watch next? 
+          
+        </p>
+        <p className='p-1'>
+        Why did you choose it? What mood is best to watch it? 
+        </p>
+        <p className='p-1'>
+        Please dont give any major spoilers.
+        </p>
         <input type="text" placeholder="Recommendation..." className='border border-black rounded-full p-2 w-full bg-white' value={summary} onChange={(e) => setSummary(e.target.value)}/>
         <div className='m-2 flex flex-row space-x-2 items-center'>
             <img src="/svgs/refSVG.svg" className='m-1 p-1 w-10'/>

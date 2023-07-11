@@ -243,11 +243,11 @@ const Recommendation = ({nodeID, setErrorCode}) => {
       <div className={`transition-all duration-500 ease-in-out mb-5 ${isExpanded ? 'h-auto opacity-100' : 'overflow-hidden p-0 h-0 opacity-50'}`}>
       <FilterBar primary="Score" secondary="Time" primaryState={isScore} setPrimaryState={setIsScore} search={search} setSearch={setSearch} isCheckboxCheckedScore={isCheckboxCheckedScore} setIsCheckboxCheckedScore={setIsCheckboxCheckedScore} isCheckboxCheckedTime={isCheckboxCheckedTime} setIsCheckboxCheckedTime={setIsCheckboxCheckedTime} isUserLevel1={isUserLevel1} setIsUserLevel1={setIsUserLevel1} isUserLevel2={isUserLevel2} setIsUserLevel2={setIsUserLevel2} isUserLevel3={isUserLevel3} setIsUserLevel3={setIsUserLevel3} isUserLevel4={isUserLevel4} setIsUserLevel4={setIsUserLevel4} isUserLevel5={isUserLevel5} setIsUserLevel5={setIsUserLevel5} isDesc={isDesc} setIsDesc={setIsDesc} isNewest={isNewest} setIsNewest={setIsNewest} selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
       </div>
-      <ToggleButton primary="From" secondary="To" primaryState={isFrom} setPrimaryState={setIsFrom}/>
+      <ToggleButton primary="Mentioned" secondary="Recommendations" primaryState={isFrom} setPrimaryState={setIsFrom}/>
       <div className='flex flex-row m-5'>
       
       <img src="/svgs/Recommendation.svg" className='w-6'/>
-      <p>Recommendations: </p>
+      <p>Recommendations on what to watch next: </p>
       </div>
       <CreateRecommendation nodeID = {nodeID} fetchData={fetchData} setErrorCode={setErrorCode}/>
       { recommendations && recommendations.length>0 &&
