@@ -27,7 +27,7 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
 
     const handleSearchClick = (movie, id, isMovie) => {
       // const response = await api.get(`/getSourceByLink?offset=1&limit=1&link=${movie.original_title}&imdbid=${movie.id}`);
-      console.log(movie)
+      // console.log(movie)
       if(isMovie){
         setLinks([...links, movie.original_title]);
       }
@@ -64,7 +64,7 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
     async function onSubmitCreateSummary() {
       if(isPath){
         try {
-          console.log(nodeID)
+          // console.log(nodeID)
           const token = localStorage.getItem("token");
           const response = await axios.post(
             "https://jignasu.pythonanywhere.com/createComment",
@@ -95,7 +95,7 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
     }
     else{
       try {
-        console.log(nodeID)
+        // console.log(nodeID)
         const token = localStorage.getItem("token");
         const response = await axios.post(
           "https://jignasu.pythonanywhere.com/createComment",

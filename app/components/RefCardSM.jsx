@@ -38,7 +38,7 @@ const RefCardSM = ({imdbids, handleRemoveMovie, isExpanded, isMovies}) => {
             Promise.all(promises)
                 .then((results) => {
                     let newData = results.map(response => response.data);
-                    console.log(newData);
+                    // console.log(newData);
                     setData(newData);
                 })
                 .catch((error) => {
@@ -66,8 +66,8 @@ const RefCardSM = ({imdbids, handleRemoveMovie, isExpanded, isMovies}) => {
   return (
     <>
         {data?.map((row, index) => {
-            console.log("in the jsx map", isMovies[index])
-            console.log(row)
+            // console.log("in the jsx map", isMovies[index])
+            // console.log(row)
             if(isMovies[index]){
                 return(
                 <div key = {index} className='m-1 flex justify-between rounded-lg overflow-hidden flex-row border border-black w-[200px] h-[100px]'>

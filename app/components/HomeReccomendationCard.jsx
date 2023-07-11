@@ -95,15 +95,15 @@ const HomeReccomendationCard = ({recommendation, setErrorCode}) => {
       try {
         let response =null;
         if(recommendation?.node.isMovie===true){
-            console.log("movie")
-            console.log(recommendation)
+            // console.log("movie")
+            // console.log(recommendation)
             response = await axios.get('https://api.themoviedb.org/3/movie/' + recommendation?.node?.imdbid, {
           headers: { Authorization: `Bearer ${bearerToken}` },
             });
         }
         else{
-            console.log("tv")
-            console.log(recommendation)
+            // console.log("tv")
+            // console.log(recommendation)
             response = await axios.get('https://api.themoviedb.org/3/tv/' + recommendation?.node?.imdbid, {
           headers: { Authorization: `Bearer ${bearerToken}` },
         });

@@ -16,7 +16,7 @@ async function fetchlistMovie(id, moviePage, currentGenre, setMovieData) {
       const response = await axios.get(`https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=${moviePage}&sort_by=popularity.desc&with_genres=${id}`, {
         headers: { Authorization: `Bearer ${bearerToken}` },
       });
-      console.log(response.data);
+      // console.log(response.data);
       setMovieData(response?.data.results);
     } catch (error) {
       console.error(error);
@@ -34,10 +34,10 @@ async function checkMovieID(setCurrentGenre, id, setGenre) {
     // console.log(response.data.genres);
     setGenre(response?.data?.genres);
     // console.log(response?.data?.genres)
-    console.log(id)
+    // console.log(id)
     const temp = response.data.genres
-    console.log(temp)
-    console.log(temp.find((item) => item.id.toString() === id).name)
+    // console.log(temp)
+    // console.log(temp.find((item) => item.id.toString() === id).name)
     // setCurrentGenre(response?.data.genres.find((item) => item.id === id)?.name);
     // let foundObj = temp.find((item) => item.id === id);
     // console.log(foundObj)
@@ -78,9 +78,9 @@ const genrePage = ({ params: { id } }) => {
     fetchData();
   }, [currentGenre, moviePage])
 
-  useEffect(()=>{
-    console.log(currentGenre)
-  }, [currentGenre])
+  // useEffect(()=>{
+  //   console.log(currentGenre)
+  // }, [currentGenre])
 
 
     return(

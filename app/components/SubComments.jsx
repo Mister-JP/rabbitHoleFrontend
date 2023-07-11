@@ -45,8 +45,8 @@ const fetchRefs = async () =>{
                 'Content-Type': 'application/json',
             },
         });
-        console.log("fetchrefs: ",recommendation.content)
-        console.log(references.data.Refs)
+        // console.log("fetchrefs: ",recommendation.content)
+        // console.log(references.data.Refs)
         setRefs(references.data.Refs);
         // setRecommendationScore(score.data.score);
         // console.log("for nodeid: ", recommendation.id, "score = ", recommendationScore)
@@ -83,7 +83,7 @@ const handleScoreChange = async(newScore) =>{
                 //setTotalScore(recommendation.score);
                 await fetchRefs();
                 await fetchRecScore();
-                console.log("successfully loaded card: ", recommendation.content)
+                // console.log("successfully loaded card: ", recommendation.content)
             }
             catch{
                 console.log("found error in useffect of card: ", recommendation.content)

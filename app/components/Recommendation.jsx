@@ -32,9 +32,9 @@ const Recommendation = ({nodeID, setErrorCode}) => {
       token = window.localStorage.getItem('token');
     }
 
-    useEffect(()=>{
-      console.log(recommendations)
-    }, [recommendations])
+    // useEffect(()=>{
+    //   console.log(recommendations)
+    // }, [recommendations])
     
 
 // Pass params object to axios get method

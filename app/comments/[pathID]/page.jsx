@@ -63,7 +63,7 @@ const commentsPage = ({ params: { id } }) => {
             Authorization: `Bearer ${token}`,
         },
         });
-        console.log(response)
+        // console.log(response)
         setNodeScore(response.data.score);
     } 
     catch (error) {

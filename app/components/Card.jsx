@@ -18,8 +18,8 @@ function Card({ data, genre, isMovie=true }) {
   }
 
   const handleSearchClick = async (movie) => {
-    console.log("in the card first print")
-    console.log(movie)
+    // console.log("in the card first print")
+    // console.log(movie)
     try {
         if(movie?.id!==null){
         if(movie?.original_name!==null){
@@ -30,8 +30,8 @@ function Card({ data, genre, isMovie=true }) {
       else{
         response = await api.get(`/getSourceByLink?offset=1&limit=1&link=${movie.original_name}&imdbid=${movie.id}&isMovie=0`);
       }
-      console.log("in the card second print")
-      console.log(response)
+    //   console.log("in the card second print")
+    //   console.log(response)
       if (response.data && response.data.Source) {
         if(isMovie){
         router.push(`/movie/${response.data.Source}`);
@@ -61,7 +61,7 @@ function Card({ data, genre, isMovie=true }) {
 
 
   const releaseYear = data.release_date && data.release_date.substring(0, 4);
-  console.log(data.genre_ids)
+//   console.log(data.genre_ids)
 
   return (
     <div className="flex flex-col md:flex-row w-full m-1 md:m-5 cursor-pointer items-center p-1 md:p-5 hover:bg-gray-100 transition-colors duration-200 ease-in-out" onClick={() => handleSearchClick(data)}>

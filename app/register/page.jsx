@@ -24,7 +24,7 @@ const RegistrationPage = () => {
             headers: { "Content-Type": "application/json" },
           }
         );
-        console.log(response.data.message);
+        // console.log(response.data.message);
         router.push("/login");
       } catch (error) {
         console.error("Error during registration:", error);

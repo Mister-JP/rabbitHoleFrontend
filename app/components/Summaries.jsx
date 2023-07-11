@@ -249,7 +249,7 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
           }
           let response = null;
           if(sortOrderEnabled){
-            console.log("both")
+            // console.log("both")
             response = await axios.get('https://jignasu.pythonanywhere.com/getSummariesSortBoth', {
               params: {
                   indices: indices,
@@ -324,14 +324,14 @@ const Summaries = ({ nodeID, isPath=false, pathID=null }) => {
           return response.data;
         }
         else{
-            console.log("refresh under node")
+            // console.log("refresh under node")
             let refreshDataLimit = data.length
             if(refreshDataLimit<10){
               refreshDataLimit = 10;
             }
             let response = null;
             if(sortOrderEnabled){
-              console.log("both")
+              // console.log("both")
               response = await axios.get('https://jignasu.pythonanywhere.com/getSummariesSortBoth', {
                 params: {
                     indices: indices,

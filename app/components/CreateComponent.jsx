@@ -74,7 +74,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
               },
             }
           );
-          console.log(response.data);
+          // console.log(response.data);
           await sleep(2000);
           fetchSummaries();
         //   router.push("/source/" + response.data.nodeID);
@@ -103,7 +103,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
             },
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
       //   router.push("/source/" + response.data.nodeID);
       } catch (error) {
         console.error("Error during create source:", error);
@@ -130,7 +130,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
     //   router.push("/source/" + response.data.nodeID);
     } catch (error) {
       console.error("Error during create source:", error);
@@ -154,7 +154,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
     //   router.push("/source/" + response.data.nodeID);
     } catch (error) {
       console.error("Error during create source:", error);

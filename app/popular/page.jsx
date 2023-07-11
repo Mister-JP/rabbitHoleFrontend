@@ -22,7 +22,7 @@ function PopularPage() {
       const response = await axios.get(`https://api.themoviedb.org/3/genre/movie/list`, {
         headers: { Authorization: `Bearer ${bearerToken}` },
       });
-      console.log(response.data.genres);
+    //   console.log(response.data.genres);
       setGenre(response?.data?.genres);
     } catch (error) {
       console.error(error);
@@ -35,7 +35,7 @@ function PopularPage() {
       const response = await axios.get(`https://api.themoviedb.org/3/genre/tv/list`, {
         headers: { Authorization: `Bearer ${bearerToken}` },
       });
-      console.log(response.data.genres);
+    //   console.log(response.data.genres);
       setGenre(response?.data?.genres);
     } catch (error) {
       console.error(error);

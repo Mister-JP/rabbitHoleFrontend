@@ -126,9 +126,9 @@ const RefCardsMD = ({reference, nodeID, commentsButton, setErrorCode}) => {
         }
       }
 
-    useEffect(()=>{
-        console.log(reference)
-    }, [reference])
+    // useEffect(()=>{
+    //     console.log(reference)
+    // }, [reference])
 
 
   return (

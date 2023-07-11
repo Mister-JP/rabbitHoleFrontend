@@ -22,7 +22,7 @@ function TopRatedPage() {  // Renaming the component to TopRatedPage
       const response = await axios.get(`https://api.themoviedb.org/3/genre/movie/list`, {
         headers: { Authorization: `Bearer ${bearerToken}` },
       });
-      console.log(response.data.genres);
+    //   console.log(response.data.genres);
       setGenre(response?.data?.genres);
     } catch (error) {
       console.error(error);
@@ -35,7 +35,7 @@ function TopRatedPage() {  // Renaming the component to TopRatedPage
       const response = await axios.get(`https://api.themoviedb.org/3/genre/tv/list`, {
         headers: { Authorization: `Bearer ${bearerToken}` },
       });
-      console.log(response.data.genres);
+    //   console.log(response.data.genres);
       setGenre(response?.data?.genres);
     } catch (error) {
       console.error(error);
@@ -63,7 +63,7 @@ function TopRatedPage() {  // Renaming the component to TopRatedPage
       const response = await axios.get(`https://api.themoviedb.org/3/tv/top_rated?include_adult=false&language=en-US&page=${tvShowPage}&sort_by=popularity.desc`, {
         headers: { Authorization: `Bearer ${bearerToken}` }, 
       });
-      console.log(response)
+    //   console.log(response)
       setTvShowData(response.data.results);
     } catch (error) {
       console.error(error);

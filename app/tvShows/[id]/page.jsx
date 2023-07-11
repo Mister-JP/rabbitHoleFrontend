@@ -90,7 +90,7 @@ const SourcePage = ({ params: { id } }) => {
             const response = await axios.get('https://api.themoviedb.org/3/tv/' + node.imdbid, {
               headers: { Authorization: `Bearer ${bearerToken}` },
             });
-            console.log(response.data)
+            // console.log(response.data)
             setData(response.data);
           } catch (error) {
             console.error(error);
@@ -103,9 +103,9 @@ const SourcePage = ({ params: { id } }) => {
         }
       }, [node]);
 
-      useEffect(()=>{
-        console.log(data);
-      },[data])
+      // useEffect(()=>{
+      //   console.log(data);
+      // },[data])
 
     return (
       <>

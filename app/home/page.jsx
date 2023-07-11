@@ -90,9 +90,9 @@ const HomePage = () => {
     setSortorder(sortOrder === 1 ? 0 : 1);
   };
 
-  const handleSubmit = () => {
-    console.log("clicked");
-  };
+  // const handleSubmit = () => {
+  //   console.log("clicked");
+  // };
 
   let token;
   if (typeof window !== "undefined") {
@@ -214,7 +214,7 @@ const HomePage = () => {
       setErrorOccured(false);
       setLoading(true);
       if (sortOrderEnabled) {
-        console.log("both")
+        // console.log("both")
         response = await axios.get("https://jignasu.pythonanywhere.com/getSourceSortBoth", {
           params: {
             indices: indices,

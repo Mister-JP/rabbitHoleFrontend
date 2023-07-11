@@ -39,7 +39,7 @@ const SearchBar = ({handleSearchClick}) => {
             params: { query: debouncedInput },
           });
         }
-        console.log(response)
+        // console.log(response)
         setData(response.data.results);
       } catch (error) {
         console.error(error);
