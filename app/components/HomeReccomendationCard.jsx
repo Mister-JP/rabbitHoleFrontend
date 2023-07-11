@@ -5,11 +5,13 @@ import axios from 'axios'
 import Link from 'next/link'
 import api from '../api/LocalApi'
 import RecommendationCard from './RecommendationCard'
+import { useRouter } from 'next/navigation';
 
 const HomeReccomendationCard = ({recommendation, setErrorCode}) => {
   const [data, setData] = useState(null);
   const [nodeScore, setNodeScore] = useState(0);
   const [totalScore, setTotalScore] = useState(null);
+  const router = useRouter();
 
   const fetchNodeScore = async () =>{
     try {
@@ -129,6 +131,10 @@ const HomeReccomendationCard = ({recommendation, setErrorCode}) => {
 //   })
 //   console.log(recommendation.summary)
 //   }, [data])
+
+const handleCardClick = () =>{
+    router.push(`/${recommendation?.node.isMovie===true? 'movie': 'tvShows'}/${recommendation.node.id}`)
+}
   
  
   return (
@@ -139,7 +145,8 @@ const HomeReccomendationCard = ({recommendation, setErrorCode}) => {
             <img
               src={`https://image.tmdb.org/t/p/w200${data.poster_path}`}
               alt={`${recommendation.node.isMovie===true ? data.original_title : data.original_name}`}
-              className="w-64 h-auto mt-1 md:w-64 mr-2"
+              className="w-64 h-auto mt-1 md:w-64 mr-2 hover:opacity-75"
+              onClick={() => handleCardClick()}
             />
           )}
           {data === null && (
@@ -147,12 +154,13 @@ const HomeReccomendationCard = ({recommendation, setErrorCode}) => {
               src="/imgs/filler_poster.png"
               alt="filler_image"
               className="w-64 mr-2"
+              
             />
           )}
           <div className="m-5 flex flex-col justify-between w-full">
             <div className="m-5 flex flex-col space-y-4">
               {recommendation !== null && (
-                <h2 className="text-2xl font-semibold text-gray-800 ">
+                <h2 className="text-2xl font-semibold text-gray-800 hover:underline"  onClick={() => handleCardClick()}>
                   {recommendation.node.link}
                 </h2>
               )}

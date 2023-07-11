@@ -4,6 +4,7 @@ import axios from 'axios';
 import api from '../api/LocalApi';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+// import { useRouter } from 'next/navigation';
 
 
 
@@ -130,16 +131,19 @@ const RefCardsMD = ({reference, nodeID, commentsButton, setErrorCode}) => {
     //     console.log(reference)
     // }, [reference])
 
+    const handleCardClick = () =>{
+        router.push(`${reference.isMovie===true? '/movie': '/tvShows'}/${reference.id}`)
+    }
 
   return (
     <>
-    <div className='m-1 md:m-3 flex flex-col justify-between rounded-[15px] border border-black w-[200px] md:w-[550px] h-auto'>
+    <div className='m-1 md:m-3 flex flex-col justify-between rounded-[15px] border border-black w-[200px] md:w-[550px] h-auto '>
     <div className='m-1 md:m-3 flex flex-col md:flex-row justify-between overflow-hidden items-center'>
-        {data!==null && reference.isMovie===true && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_title} className='md:h-auto w-32 '/>}
-        {data!==null && reference.isMovie===false  && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_name} className='md:h-auto w-32'/>}
+        {data!==null && reference.isMovie===true && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_title} className='md:h-auto w-32 hover:opacity-75'   onClick={() => handleCardClick()}/>}
+        {data!==null && reference.isMovie===false  && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_name} className='md:h-auto w-32 hover:opacity-75'   onClick={() => handleCardClick()}/>}
         <div className='w-full flex flex-col justify-between'>
-        {data!==null && reference.isMovie===true && <p className='m-2 p-1 text-2xl md:text-xl font-bold'>{data.original_title}</p>}
-        {data!==null && reference.isMovie===false && <p className='m-2 p-1 text-2xl md:text-xl font-bold'>{data.original_name}</p>}
+        {data!==null && reference.isMovie===true && <p className='m-2 p-1 text-2xl md:text-xl font-bold hover:underline' onClick={() => handleCardClick()}>{data.original_title}</p>}
+        {data!==null && reference.isMovie===false && <p className='m-2 p-1 text-2xl md:text-xl font-bold hover:underline' onClick={() => handleCardClick()}>{data.original_name}</p>}
         <div className="ml-5 mt-5 flex flex-wrap space-between space-x-4">
                   <div className="flex border rounded-full p-1">
                     👶: {totalScore && totalScore[0]}
