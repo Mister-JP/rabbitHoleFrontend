@@ -116,7 +116,7 @@ const HomePage = () => {
       setLoading(true);
       setErrorOccured(false);
       if (sortOrderEnabled) {
-        response = await axios.get("http://localhost:8000/getSourceSortBoth", {
+        response = await axios.get("https://jignasu.pythonanywhere.com/getSourceSortBoth", {
           params: {
             indices: indices,
             descending: scoreDesc,
@@ -134,7 +134,7 @@ const HomePage = () => {
         });
       } else if (timeEnabled) {
         response = await axios.get(
-          "http://localhost:8000/getSourceSortBoth",
+          "https://jignasu.pythonanywhere.com/getSourceSortBoth",
           {
             params: {
               before: before,
@@ -153,7 +153,7 @@ const HomePage = () => {
         );
       } else {
         //sortscoreenabled
-        response = await axios.get("http://localhost:8000/getSourceSortBoth", {
+        response = await axios.get("https://jignasu.pythonanywhere.com/getSourceSortBoth", {
           params: {
             indices: indices,
             descending: scoreDesc,
@@ -215,7 +215,7 @@ const HomePage = () => {
       setLoading(true);
       if (sortOrderEnabled) {
         console.log("both")
-        response = await axios.get("http://localhost:8000/getSourceSortBoth", {
+        response = await axios.get("https://jignasu.pythonanywhere.com/getSourceSortBoth", {
           params: {
             indices: indices,
             descending: scoreDesc,
@@ -233,7 +233,7 @@ const HomePage = () => {
         });
       } else if (timeEnabled) {
         response = await axios.get(
-          "http://localhost:8000/getSourceSortBoth",
+          "https://jignasu.pythonanywhere.com/getSourceSortBoth",
           {
             params: {
               before: before,
@@ -252,7 +252,7 @@ const HomePage = () => {
         );
       } else {
         //sortscoreenabled
-        response = await axios.get("http://localhost:8000/getSourceSortBoth", {
+        response = await axios.get("https://jignasu.pythonanywhere.com/getSourceSortBoth", {
           params: {
             indices: indices,
             descending: scoreDesc,

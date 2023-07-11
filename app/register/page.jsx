@@ -14,7 +14,7 @@ const RegistrationPage = () => {
   async function onSubmitRegister(){
     try {
         const response = await axios.post(
-          "http://localhost:8000/register",
+          "https://jignasu.pythonanywhere.com/register",
           {
             email,
             date_of_birth: dateOfBirth,

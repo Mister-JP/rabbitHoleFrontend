@@ -12,7 +12,7 @@ const LoginPage = () => {
   async function onSubmitLogin() {
     try {
       const response = await axios.post(
-        "http://localhost:8000/login",
+        "https://jignasu.pythonanywhere.com/login",
         {
           email,
           password,

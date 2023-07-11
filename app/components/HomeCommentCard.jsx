@@ -112,21 +112,21 @@ const HomeCommentCard = ({comment, nodeID, setErrorCode}) => {
     }, [pathID])
     return (
       <>
-      <div className="m-5 border border-black p-5 rounded-md">
+      <div className="m-1 md:m-5 border border-black p-0 md:p-5 rounded-md">
       {/* {errorCode===401 && <PopUpLoginRegister setErrorCode={setErrorCode}/>} */}
-      <div className='flex flex-row justify-between'>
+      <div className='flex flex-row justify-between items-center'>
       {nodes!==null && nodes.length > 0 &&
           nodes.map((node, index)=>{
               return(
                       <>
                       <RefCardsMD reference={node} nodeID={nodeID} commentsButton={false} setErrorCode={setErrorCode}/>
-                      {index===0 && <img src='/svgs/pathSVG.svg' className='w-12 h-12'/>}
+                      {index===0 && <img src='/svgs/pathSVG.svg' className='w-12 h-12 hidden md:block'/>}
                       </>
                   )
               })
           }
       </div>
-      <div className="flex space-between space-x-4 ml-5 mt-5">
+      <div className="flex flex-wrap space-between space-x-4 ml-5 mt-5">
           <div className="flex border rounded-full p-1">
               👶: {totalScore!==null && totalScore.length===5 && totalScore[0]}
           </div>
@@ -200,7 +200,7 @@ const HomeCommentCard = ({comment, nodeID, setErrorCode}) => {
       )}
       {/* {isComments && nodes!==null && <CommentsSection pathID={pathID} nodeID={nodeID} nodes={nodes} setErrorCode={setErrorCode} enableSubcomments={false} isFrom={false}/>} */}
       {comment!==null && comment?.comment!==null && nodes!==null && <CommentSectionCard enableSubcomments={false} isFrom={false} recommendation={comment.comment} pathID={pathID} nodeID={nodeID} nodes={nodes} setErrorCode={setErrorCode}/>}
-      <div className='mt-5'>
+      <div className='m-5'>
       <Link
             key={comment?.path?.id}
             href={`/comments/${comment.path.id}/${comment.path.startnode}`}

@@ -155,7 +155,7 @@ const Reference = ({nodeID}) => {
         if(!isFrom){
           try {
             const response = await axios.get(
-              "http://localhost:8000/getRefsToNodeID",
+              "https://jignasu.pythonanywhere.com/getRefsToNodeID",
               {
                 params: params,
                 headers: {
@@ -172,7 +172,7 @@ const Reference = ({nodeID}) => {
         else{
           try {
             const response = await axios.get(
-              "http://localhost:8000/getRefsFromNodeID",
+              "https://jignasu.pythonanywhere.com/getRefsFromNodeID",
               {
                 params: params,
                 headers: {
@@ -188,7 +188,7 @@ const Reference = ({nodeID}) => {
         }
         // try {
         //   const response = await axios.get(
-        //     "http://localhost:8000/getSummariesSortBoth",
+        //     "https://jignasu.pythonanywhere.com/getSummariesSortBoth",
         //     {
         //       params: params,
         //       headers: {

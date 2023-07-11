@@ -156,7 +156,7 @@ const Recommendation = ({nodeID, setErrorCode}) => {
       if(!isFrom){
         try {
           const response = await axios.get(
-            "http://localhost:8000/getSummariesSortBoth",
+            "https://jignasu.pythonanywhere.com/getSummariesSortBoth",
             {
               params: params,
               headers: {
@@ -176,7 +176,7 @@ const Recommendation = ({nodeID, setErrorCode}) => {
       else{
         try {
           const response = await axios.get(
-            "http://localhost:8000/getSummaryFromNodeIDFrom",
+            "https://jignasu.pythonanywhere.com/getSummaryFromNodeIDFrom",
             {
               params: params,
               headers: {
@@ -195,7 +195,7 @@ const Recommendation = ({nodeID, setErrorCode}) => {
       }
       // try {
       //   const response = await axios.get(
-      //     "http://localhost:8000/getSummariesSortBoth",
+      //     "https://jignasu.pythonanywhere.com/getSummariesSortBoth",
       //     {
       //       params: params,
       //       headers: {

@@ -73,7 +73,7 @@ const SearchBar = ({handleSearchClick}) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto justify-start" ref={inputRef}>
+    <div className="w-full max-w-[400px] mx-auto justify-start" ref={inputRef}>
       <div className="flex">
         <button
           className={`px-4 rounded-l-full ${
@@ -96,10 +96,10 @@ const SearchBar = ({handleSearchClick}) => {
           TV Shows
         </button>
       </div>
-      <div className="flex items-center m-1 border border-black rounded-full p-1 bg-white">
+      <div className="flex items-center m-1 border border-black rounded-full p-1 bg-white ">
       
         <input
-          className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+          className="appearance-none bg-transparent w-full border-none text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}

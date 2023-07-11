@@ -67,7 +67,7 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
           console.log(nodeID)
           const token = localStorage.getItem("token");
           const response = await axios.post(
-            "http://localhost:8000/createComment",
+            "https://jignasu.pythonanywhere.com/createComment",
             {
               content: summary,
               links,
@@ -98,7 +98,7 @@ const CreateComment = ({pathID, commentID, isPath, nodeID, labelText, fetchData,
         console.log(nodeID)
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:8000/createComment",
+          "https://jignasu.pythonanywhere.com/createComment",
           {
             content: summary,
             links,

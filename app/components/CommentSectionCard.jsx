@@ -160,7 +160,7 @@ const CommentSectionCard = ({pathID, isFrom=false, recommendation, nodeID, nodes
       }
       try {
           const response = await axios.get(
-            "http://localhost:8000/getCommentsSortBoth",
+            "https://jignasu.pythonanywhere.com/getCommentsSortBoth",
             {
               params: params,
               headers: {
@@ -290,13 +290,14 @@ const handleScoreChange = async(newScore) =>{
     <div className='flex flex-col border border-black rounded-lg m-1'>
         <div className='flex flex-row'>
         <div className='flex flex-row border border-black rounded-full px-2 m-5'>
-            <p>User level: 👶</p>
+        <p>From: </p>
+            <p>User level 👶</p>
         </div>
-        {isFrom && 
+        {/* {isFrom && 
         <div className='flex flex-row border border-black rounded-full px-2 m-5'>
             <p>From: </p>
         </div>
-        }
+        } */}
         </div>
         <p className='ml-5'>{recommendation.content}</p>
         <div className="ml-5 mt-5 flex space-between space-x-4">
@@ -388,7 +389,7 @@ const handleScoreChange = async(newScore) =>{
     </div></>}
     {enableSubcomments===true && <div className='flex'>
         <div className='border-l-2 border-gray-100 hover:border-gray-700 h-30 transition-all duration-200 ml-1'></div>
-        <div className='ml-4 w-full'>
+        <div className='ml-1 md:ml-4 w-full'>
           {enableSubcomments===true && nodes !== null && recommendations && recommendations.length > 0 &&
             recommendations.map((rec, i) => (
               <div key={i}>

@@ -61,7 +61,7 @@ const CreateRecommendation = ({nodeID, fetchData, setErrorCode}) => {
       if(isExpanded){
         try{
           const token = localStorage.getItem("token");
-          const response = await axios.get('http://localhost:8000/getSummaryFromUserAndNode', {
+          const response = await axios.get('https://jignasu.pythonanywhere.com/getSummaryFromUserAndNode', {
                   params: {
                       nodeID: nodeID
                   },
@@ -98,7 +98,7 @@ const CreateRecommendation = ({nodeID, fetchData, setErrorCode}) => {
         
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:8000/createSummary",
+          "https://jignasu.pythonanywhere.com/createSummary",
           {
             content: summary,
             links,

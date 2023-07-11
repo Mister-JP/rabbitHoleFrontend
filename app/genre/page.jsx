@@ -49,8 +49,8 @@ const page = () => {
 
   return (
     <>
-    <div className='m-5 p-2 item-center w-full'>
-        <h1 className='font-plusJakarta text-4xl mt-5 font-bold text-center'>Browse by Genre</h1>
+    <div className='md:m-5 p-2 item-center w-full'>
+        <h1 className='font-plusJakarta text-3xl md:text-4xl mt-5 font-bold text-center'>Browse by Genre</h1>
     </div>
     {true && <div className="m-5 flex">
         <button
@@ -74,15 +74,15 @@ const page = () => {
           TV Shows
         </button>
       </div>}
-      <div className='flex flex-row flex-wrap space-x-5 w-full m-5 p-2'>
+      <div className='flex flex-row flex-wrap md:space-x-5 w-full justify-start m-5 md:p-2'>
         
         {genre?.map((g) => {
           return(
-            <div className='flex flex-row w-2/7 m-2 p-1 justify-end'>
+            <div className='flex flex-row md:w-2/7 md:m-2 p-1 justify-end'>
               {/* image */}
               <div key = {g?.id} className='flex flex-col space-y-1 justify-between p-1' >
                 <Link href={`/${isMovie ? 'movieGenre': 'tvGenre'}/${g?.id}`} key={g?.id}
-                    className="font-plusJakarta text-2xl mt-5 font-bold text-center py-2 px-4 mx-2 my-1 rounded-full border border-black hover:bg-black hover:text-white transition duration-200 text-center">
+                    className="font-plusJakarta text-lg md:text-2xl mt-5 font-bold text-center py-2 px-4 md:mx-2 my-1 rounded-full border border-black hover:bg-black hover:text-white transition duration-200 text-center">
                       {g?.name}
                 </Link>
                 {/* <button onClick={() => handleButtonClick(e)} className='font-plusJakarta text-2xl mt-5 font-bold text-center py-2 px-4 rounded border border-black rounded-full hover:bg-black hover:text-white font-normal transition duration-200'>{g.name}</button> */}

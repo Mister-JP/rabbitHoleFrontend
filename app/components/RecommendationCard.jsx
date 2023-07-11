@@ -15,6 +15,12 @@ const RecommendationCard = ({isFrom, recommendation, nodeID, setErrorCode}) => {
   const fetchRecScore = async () =>{
     try {
         const token = localStorage.getItem('token');
+        const summary = await api.get('/getScoreSummary', {
+            params: {summaryID: recommendation.id},
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         const score = await api.get('/getScoreUserSummary', {
             params: { summaryID: recommendation.id },
             headers: {
@@ -22,16 +28,11 @@ const RecommendationCard = ({isFrom, recommendation, nodeID, setErrorCode}) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        const summary = await api.get('/getScoreSummary', {
-            params: {summaryID: recommendation.id},
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        
         
         // console.log("node - ", recommendation.content, score.data.score, summary.data.score)
-        setTotalScore(summary.data.score);
-        setRecommendationScore(score.data.score);
+        setTotalScore(summary?.data?.score);
+        setRecommendationScore(score?.data?.score);
         // console.log("for nodeid: ", recommendation.id, "score = ", recommendationScore)
     } 
     catch (error) {
@@ -99,16 +100,17 @@ const handleScoreChange = async(newScore) =>{
     }, [recommendation])
 
   return (
-    <div className='flex flex-col border border-black rounded-lg m-5'>
+    <div className='flex flex-col border border-black rounded-lg m-1 md:m-5'>
         <div className='flex flex-row'>
-        <div className='flex flex-row border border-black rounded-full px-2 m-5'>
-            <p>User level: 👶</p>
+        <div className='flex flex-row border border-black rounded-full px-2 m-2 md:m-5'>
+            <p>From: </p>
+            <p>User level 👶</p>
         </div>
-        {isFrom && 
+        {/* {isFrom && 
         <div className='flex flex-row border border-black rounded-full px-2 m-5'>
             <p>From: </p>
         </div>
-        }
+        } */}
         </div>
         <p className='ml-5'>{recommendation.content}</p>
         <div className="ml-5 mt-5 flex space-between space-x-4">

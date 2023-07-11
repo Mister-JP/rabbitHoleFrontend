@@ -104,7 +104,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
             setLoading(true);
             setErrorOccured(false)
             if(sortOrderEnabled){
-              response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+              response = await axios.get('https://jignasu.pythonanywhere.com/getPathsSortBoth', {
                   params: {
                       indices: indices,
                       descending: scoreDesc,
@@ -126,7 +126,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
               });
             }
             else if(timeEnabled){
-              response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
+              response = await axios.get('https://jignasu.pythonanywhere.com/getSummariesSortBoth', {
                   params: {
                     before: before,
                     timestamp: `${date} ${timeStamp}`,
@@ -147,7 +147,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
               });
             }
             else{//sortscoreenabled
-              response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+              response = await axios.get('https://jignasu.pythonanywhere.com/getPathsSortBoth', {
                   params: {
                       indices: indices,
                       descending: scoreDesc,
@@ -189,7 +189,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
             setLoading(true);
             setErrorOccured(false);
             if(sortOrderEnabled){
-              response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+              response = await axios.get('https://jignasu.pythonanywhere.com/getPathsSortBoth', {
                   params: {
                       indices: indices,
                       descending: scoreDesc,
@@ -213,7 +213,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
               });
             }
             else if(timeEnabled){
-              response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+              response = await axios.get('https://jignasu.pythonanywhere.com/getPathsSortBoth', {
                   params: {
                       before: before,
                       timestamp: `${date} ${timeStamp}`,
@@ -235,7 +235,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
               });
             }
             else{//sortenabled
-              response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+              response = await axios.get('https://jignasu.pythonanywhere.com/getPathsSortBoth', {
                   params: {
                       indices: indices,
                       descending: scoreDesc,
@@ -299,7 +299,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
           setLoading(true);
           setErrorOccured(false)
           if(sortOrderEnabled){
-            response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+            response = await axios.get('https://jignasu.pythonanywhere.com/getPathsSortBoth', {
                 params: {
                     indices: indices,
                     descending: scoreDesc,
@@ -321,7 +321,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
             });
           }
           else if(timeEnabled){
-            response = await axios.get('http://localhost:8000/getSummariesSortBoth', {
+            response = await axios.get('https://jignasu.pythonanywhere.com/getSummariesSortBoth', {
                 params: {
                   before: before,
                   timestamp: `${date} ${timeStamp}`,
@@ -342,7 +342,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
             });
           }
           else{//sortscoreenabled
-            response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+            response = await axios.get('https://jignasu.pythonanywhere.com/getPathsSortBoth', {
                 params: {
                     indices: indices,
                     descending: scoreDesc,
@@ -387,7 +387,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
           setLoading(true);
           setErrorOccured(false);
           if(sortOrderEnabled){
-            response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+            response = await axios.get('https://jignasu.pythonanywhere.com/getPathsSortBoth', {
                 params: {
                     indices: indices,
                     descending: scoreDesc,
@@ -411,7 +411,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
             });
           }
           else if(timeEnabled){
-            response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+            response = await axios.get('https://jignasu.pythonanywhere.com/getPathsSortBoth', {
                 params: {
                     before: before,
                     timestamp: `${date} ${timeStamp}`,
@@ -433,7 +433,7 @@ const Paths = ({ nodeID, summaryID, isComment, commentID }) => {
             });
           }
           else{//sortenabled
-            response = await axios.get('http://localhost:8000/getPathsSortBoth', {
+            response = await axios.get('https://jignasu.pythonanywhere.com/getPathsSortBoth', {
                 params: {
                     indices: indices,
                     descending: scoreDesc,

@@ -159,7 +159,7 @@ const CommentsSection = ({pathID, nodeID, nodes, setErrorCode}) => {
         if(!isFrom){
           try {
             const response = await axios.get(
-              "http://localhost:8000/getCommentsSortBoth",
+              "https://jignasu.pythonanywhere.com/getCommentsSortBoth",
               {
                 params: params,
                 headers: {
@@ -176,7 +176,7 @@ const CommentsSection = ({pathID, nodeID, nodes, setErrorCode}) => {
         else{
           try {
             const response = await axios.get(
-              "http://localhost:8000/getCommentsSortBoth",
+              "https://jignasu.pythonanywhere.com/getCommentsSortBoth",
               {
                 params: params,
                 headers: {
@@ -192,7 +192,7 @@ const CommentsSection = ({pathID, nodeID, nodes, setErrorCode}) => {
         }
         // try {
         //   const response = await axios.get(
-        //     "http://localhost:8000/getSummariesSortBoth",
+        //     "https://jignasu.pythonanywhere.com/getSummariesSortBoth",
         //     {
         //       params: params,
         //       headers: {
@@ -231,7 +231,7 @@ const CommentsSection = ({pathID, nodeID, nodes, setErrorCode}) => {
 
   return (
     <>
-     <div className="flex flex-col m-5 space-x-4">
+     <div className="flex flex-col m-1 md:m-5 space-x-4">
       <div className={`flex flex-row space-x-4 cursor-pointer`} onClick={handleToggle}>
         <img src='/svgs/DropDown.svg' className={`w-4 transform ${rotationClass}`}/>
         <div>Filter</div>

@@ -103,7 +103,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
       //change it to filter_sort_tables later to apply the filter
       if(isPath){
         if(sortOrderEnabled){
-          response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               indices: indices,
               descending: scoreDesc,
@@ -123,7 +123,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
           });
         }
         else if(timeEnabled){
-          response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               before: before,
               timestamp: `${date} ${timeStamp}`,
@@ -141,7 +141,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
           });
         }
         else{
-          response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               indices: indices,
               descending: scoreDesc,
@@ -169,7 +169,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
       }
       else{
         if(sortOrderEnabled){
-          response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               indices: indices,
               descending: scoreDesc,
@@ -189,7 +189,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
           });
         }
         else if(timeEnabled){
-          response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               before: before,
               timestamp: `${date} ${timeStamp}`,
@@ -207,7 +207,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
           });
         }
         else{
-          const response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          const response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               indices: indices,
               descending: scoreDesc,
@@ -251,7 +251,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
       //change it to filter_sort_tables later to apply the filter
       if(isPath){
         if(sortOrderEnabled){
-          response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               indices: indices,
               descending: scoreDesc,
@@ -271,7 +271,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
           });
         }
         else if(timeEnabled){
-          response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               before: before,
               timestamp: `${date} ${timeStamp}`,
@@ -289,7 +289,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
           });
         }
         else{
-          response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               indices: indices,
               descending: scoreDesc,
@@ -317,7 +317,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
       }
       else{
         if(sortOrderEnabled){
-          response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               indices: indices,
               descending: scoreDesc,
@@ -337,7 +337,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
           });
         }
         else if(timeEnabled){
-          response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               before: before,
               timestamp: `${date} ${timeStamp}`,
@@ -355,7 +355,7 @@ const Comments = ({ nodeID, isPath, pathID, commentID }) => {
           });
         }
         else{
-          const response = await axios.get('http://localhost:8000/getCommentsSortBoth', {
+          const response = await axios.get('https://jignasu.pythonanywhere.com/getCommentsSortBoth', {
             params: {
               indices: indices,
               descending: scoreDesc,

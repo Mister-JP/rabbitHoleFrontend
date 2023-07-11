@@ -115,7 +115,7 @@ const SourcePage = ({ params: { id } }) => {
       {errorCode===401 && <PopUpLoginRegister classname="z-100" setErrorCode={setErrorCode}/>}
         {data ? (
           <>
-            <div className="flex m-5">
+            <div className="flex flex-col items-center md:flex-row m-1 md:m-5">
               {data && data.poster_path && (
                 <img
                   src={`https://image.tmdb.org/t/p/w200${data.poster_path}`}

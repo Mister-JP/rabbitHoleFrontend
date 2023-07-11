@@ -22,7 +22,7 @@ const PopUpLoginRegister = ({setErrorCode, formP = "login" }) => {
   async function onSubmitRegister(){
     try {
         const response = await axios.post(
-          "http://localhost:8000/register",
+          "https://jignasu.pythonanywhere.com/register",
           {
             email,
             date_of_birth: dateOfBirth,
@@ -46,7 +46,7 @@ const PopUpLoginRegister = ({setErrorCode, formP = "login" }) => {
   async function onSubmitLogin() {
     try {
       const response = await axios.post(
-        "http://localhost:8000/login",
+        "https://jignasu.pythonanywhere.com/login",
         {
           email,
           password,

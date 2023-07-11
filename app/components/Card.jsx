@@ -64,7 +64,7 @@ function Card({ data, genre, isMovie=true }) {
   console.log(data.genre_ids)
 
   return (
-    <div className="flex flex-row w-full m-5 cursor-pointer items-center p-5 hover:bg-gray-100 transition-colors duration-200 ease-in-out" onClick={() => handleSearchClick(data)}>
+    <div className="flex flex-col md:flex-row w-full m-1 md:m-5 cursor-pointer items-center p-1 md:p-5 hover:bg-gray-100 transition-colors duration-200 ease-in-out" onClick={() => handleSearchClick(data)}>
         
       {data.poster_path && (
         <img
@@ -78,7 +78,7 @@ function Card({ data, genre, isMovie=true }) {
           {isMovie===true && <h2 className="text-2xl font-semibold text-gray-800">{data.title}</h2>}
           {isMovie===false && <h2 className="text-2xl font-semibold text-gray-800">{data.original_name}</h2>}
           <p className="text-gray-700 mb-4">{releaseYear}</p>
-          <div className="flex flex-row space-x-2 flex-wrap">
+          <div className="flex flex-row md:space-x-2 flex-wrap">
 
             {data?.genre_ids?.map((gnr, index) => {
                 // let res = data.filter((item) => gnr.includes(item.id));
@@ -86,15 +86,18 @@ function Card({ data, genre, isMovie=true }) {
             return(
 
               <Link href={`/${isMovie? 'movieGenre': 'tvGenre'}/${gnr}`} key={gnr}
-                className="py-2 px-4 mx-2 my-1 rounded-full border border-black hover:bg-black hover:text-white transition duration-200 text-center"
+                className="py-2 px-4 mx-2 my-1 rounded-full border border-black hover:bg-black hover:text-white transition duration-200 text-center text-xs ms:text-lg"
                 onClick={(event) => event.stopPropagation()}>
                    {foundObj?.name}
               </Link>)
             })}
           </div>
-          <Balancer className="text-gray-700">
+          <div className='hidden md:block'>
+            <Balancer className="text-gray-700 text-sm md:text-lg ">
           {data.overview}
           </Balancer>
+          </div>
+          
           {/* <p className="text-gray-700">{data.overview}</p> */}
         </div>
       </div>

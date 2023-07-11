@@ -115,7 +115,7 @@ const SourcePage = ({ params: { id } }) => {
         {data ? (
           <>
           <h1>NOT ACTIVEEE</h1>
-            <div className="flex m-5">
+            <div className="flex m-1 md:m-5">
               {data && data.poster_path && (
                 <img
                   src={`https://image.tmdb.org/t/p/w200${data.poster_path}`}

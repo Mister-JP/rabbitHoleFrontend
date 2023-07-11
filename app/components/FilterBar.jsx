@@ -12,7 +12,7 @@ const FilterBar = ({primary, secondary, primaryState, setPrimaryState, isCheckbo
   }
 
   return (
-    <div className={`flex flex-row justify-between items-center border border-black mt-1 rounded-full p-2 transition-all duration-500 ease-in-out w-4/5 space-x-4`}>
+    <div className={`flex flex-col md:flex-row justify-between items-center border border-black mt-1 rounded-lg space-y-2 md:rounded-full p-3 transition-all duration-500 ease-in-out w-full md:w-4/5 space-x-4`}>
         {searchBar && <input type="text" placeholder="Search..." className='border border-black rounded-full p-2 mr-5 bg-white' onChange={(e) => setSearch(e.target.value)}/>}
         {!searchBar &&
         <div 
@@ -36,7 +36,7 @@ const FilterBar = ({primary, secondary, primaryState, setPrimaryState, isCheckbo
             {isDropdownOpen && (
               <>
               <div className='h-2'></div>
-              <div className="origin-top-right absolute right-0 w-full rounded-md shadow-lg">
+              <div className="origin-top-right relative md:absolute right-0 w-full rounded-md shadow-lg">
                 <div className="rounded-md bg-white shadow-xs">
                   <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                     <button onClick={() => setFeed('recommendation')} className="block w-full px-4 py-2 text-sm leading-5 text-black hover:bg-gray-100 hover:text-black focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Recommendation</button>
@@ -48,17 +48,19 @@ const FilterBar = ({primary, secondary, primaryState, setPrimaryState, isCheckbo
               </>
             )}
           </div>}
-        <div className='flex flex-row space-between items-center space-x-1'>
-        <p className='mr-0'>
+          <p className='mr-0'>
             Sort By:   
         </p>
+        <div className='flex flex-row space-between items-center space-x-1'>
+        
         <Dropdown text="Score" isCheckboxCheckedTime={isCheckboxCheckedTime} setIsCheckboxCheckedTime={setIsCheckboxCheckedTime} isCheckboxCheckedScore={isCheckboxCheckedScore} setIsCheckboxCheckedScore={setIsCheckboxCheckedScore} isUserLevel1={isUserLevel1} setIsUserLevel1={setIsUserLevel1} isUserLevel2={isUserLevel2} setIsUserLevel2={setIsUserLevel2} isUserLevel3={isUserLevel3} setIsUserLevel3={setIsUserLevel3} isUserLevel4={isUserLevel4} setIsUserLevel4={setIsUserLevel4} isUserLevel5={isUserLevel5} setIsUserLevel5={setIsUserLevel5} isDesc={isDesc} setIsDesc={setIsDesc} isNewest={isNewest} setIsNewest={setIsNewest} selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
         <Dropdown text="Time" isCheckboxCheckedTime={isCheckboxCheckedTime} setIsCheckboxCheckedTime={setIsCheckboxCheckedTime} isCheckboxCheckedScore={isCheckboxCheckedScore} setIsCheckboxCheckedScore={setIsCheckboxCheckedScore} isUserLevel1={isUserLevel1} setIsUserLevel1={setIsUserLevel1} isUserLevel2={isUserLevel2} setIsUserLevel2={setIsUserLevel2} isUserLevel3={isUserLevel3} setIsUserLevel3={setIsUserLevel3} isUserLevel4={isUserLevel4} setIsUserLevel4={setIsUserLevel4} isUserLevel5={isUserLevel5} setIsUserLevel5={setIsUserLevel5} isDesc={isDesc} setIsDesc={setIsDesc} isNewest={isNewest} setIsNewest={setIsNewest} selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
         </div>
-        <div className='flex flex-row space-between items-center space-x-1'>
         <p className='ml-3'>
             Primary Sort: 
         </p>
+        <div className='flex flex-row space-between items-center space-x-1'>
+        
         <ToggleButton primary={primary} secondary={secondary} primaryState={primaryState} setPrimaryState={setPrimaryState}/>
         </div>
         {/* <button className='bg-gray-300 dark:text-black rounded-full p-2 px-7'>Apply</button> */}

@@ -22,7 +22,7 @@ const References = ({refs, nodeID, commentsButton, setErrorCode}) => {
 
   return (
     <>
-    <div className="flex flex-col m-5 space-x-4">
+    <div className="flex flex-col m-1 md:m-5 space-x-1 md:space-x-4">
       <div className={`flex flex-row space-x-2 cursor-pointer`} onClick={handleToggle}>
         <img src='/svgs/DropDown.svg' className={`w-4 transform ${rotationClass}`}/>
         <img src='/svgs/refSVG.svg' className='w-4'/>

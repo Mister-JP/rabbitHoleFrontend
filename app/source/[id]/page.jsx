@@ -12,7 +12,7 @@ const SourcePage = ({ params: { id } }) => {
     async function fetchData() {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8000/getNode', {
+        const response = await axios.get('https://jignasu.pythonanywhere.com/getNode', {
           params: { nodeID: id },
           headers: {
             'Content-Type': 'application/json',

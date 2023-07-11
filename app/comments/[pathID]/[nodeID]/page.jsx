@@ -116,7 +116,7 @@ const commentsPage = ({ params: { pathID, nodeID } }) => {
             return(
                     <>
                     <RefCardsMD reference={node} nodeID={nodeID} commentsButton={false} setErrorCode={setErrorCode}/>
-                    {index===0 && <img src='/svgs/pathSVG.svg' className='w-12'/>}
+                    {index===0 && <img src='/svgs/pathSVG.svg' className='hidden md:block w-12'/>}
                     </>
                 )
             })

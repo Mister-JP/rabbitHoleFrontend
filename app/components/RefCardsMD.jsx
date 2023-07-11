@@ -133,35 +133,35 @@ const RefCardsMD = ({reference, nodeID, commentsButton, setErrorCode}) => {
 
   return (
     <>
-    <div className='m-3 flex flex-col justify-between rounded-[15px] overflow-hidden border border-black w-[550px] h-[220px]'>
-    <div className='m-3 flex flex-row justify-between overflow-hidden'>
-        {data!==null && reference.isMovie===true && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_title} className='scale-100'/>}
-        {data!==null && reference.isMovie===false  && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_name} className='scale-100'/>}
+    <div className='m-1 md:m-3 flex flex-col justify-between rounded-[15px] border border-black w-[200px] md:w-[550px] h-auto'>
+    <div className='m-1 md:m-3 flex flex-col md:flex-row justify-between overflow-hidden items-center'>
+        {data!==null && reference.isMovie===true && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_title} className='md:h-auto w-32 '/>}
+        {data!==null && reference.isMovie===false  && <img src={`https://image.tmdb.org/t/p/w200${data.poster_path}`} alt={data.original_name} className='md:h-auto w-32'/>}
         <div className='w-full flex flex-col justify-between'>
-        {data!==null && reference.isMovie===true && <p className='m-2 p-1'>{data.original_title}</p>}
-        {data!==null && reference.isMovie===false && <p className='m-2 p-1'>{data.original_name}</p>}
-        <div className="m-2 p-1 flex space-between space-x-4">
-            <div className="flex border rounded-full p-1">
-            👶: {totalScore && totalScore[0]}
-            </div>
-            <div className="flex border rounded-full p-1">
-            🧑‍🎓: {totalScore && totalScore[1]}
-            </div>
-            <div className="flex border rounded-full p-1">
-            🧑‍💼: {totalScore && totalScore[2]}
-            </div>
-            <div className="flex border rounded-full p-1">
-            🧑‍✈️: {totalScore && totalScore[3]}
-            </div>
-            <div className="flex border rounded-full p-1">
-            🫅: {totalScore && totalScore[4]}
-            </div>
-            </div>
+        {data!==null && reference.isMovie===true && <p className='m-2 p-1 text-2xl md:text-xl font-bold'>{data.original_title}</p>}
+        {data!==null && reference.isMovie===false && <p className='m-2 p-1 text-2xl md:text-xl font-bold'>{data.original_name}</p>}
+        <div className="ml-5 mt-5 flex flex-wrap space-between space-x-4">
+                  <div className="flex border rounded-full p-1">
+                    👶: {totalScore && totalScore[0]}
+                  </div>
+                  <div className="flex border rounded-full p-1">
+                    🧑‍🎓: {totalScore && totalScore[1]}
+                  </div>
+                  <div className="flex border rounded-full p-1">
+                    🧑‍💼: {totalScore && totalScore[2]}
+                  </div>
+                  <div className="flex border rounded-full p-1">
+                    🧑‍✈️: {totalScore && totalScore[3]}
+                  </div>
+                  <div className="flex border rounded-full p-1">
+                    🫅: {totalScore && totalScore[4]}
+                  </div>
+                </div>
         </div>
                 
     </div>
     <hr className="mx-3 my-1 h-1 mx-auto bg-gray-200 border-0 rounded light:bg-gray-700"></hr>
-    <div className='flex flex-row space-x-4 items-center'>
+    <div className='flex flex-col md:flex-row space-x-4 items-center w-full'>
     {nodeScore !== null && (
               <div className="m-2 flex space-between space-x-4">
                 <img

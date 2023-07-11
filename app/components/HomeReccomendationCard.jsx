@@ -133,13 +133,13 @@ const HomeReccomendationCard = ({recommendation, setErrorCode}) => {
  
   return (
     <>
-      <div className="m-5 border border-black p-5 rounded-md">
-        <div className="flex flex-row w-full">
+      <div className="m-1 md:m-5 border border-black p-0 md:p-5 rounded-md">
+        <div className="flex flex-col md:flex-row w-full items-center">
           {data !== null && data.poster_path && data.poster_path!==null && (
             <img
               src={`https://image.tmdb.org/t/p/w200${data.poster_path}`}
               alt={`${recommendation.node.isMovie===true ? data.original_title : data.original_name}`}
-              className="w-64 mr-2"
+              className="w-64 h-auto mt-1 md:w-64 mr-2"
             />
           )}
           {data === null && (
@@ -161,7 +161,7 @@ const HomeReccomendationCard = ({recommendation, setErrorCode}) => {
                   {data.release_date && data.release_date.substring(0, 4)}
                 </p>
               )}
-              <div className="flex flex-row space-x-2">
+              <div className="flex flex-row flex-wrap space-y-1 space-x-2 w-full">
                 {data !== null &&
                   data?.genres?.map((genre, index) => (
                     <Link
@@ -210,7 +210,7 @@ const HomeReccomendationCard = ({recommendation, setErrorCode}) => {
                     totalScore[4]}
                 </div>
               </div>
-              <hr class="ml-5 mr-5 h-1 w-full mx-auto my-4 bg-gray-100 border-0 rounded md:my-5 light:bg-gray-700"></hr>
+              <hr class="ml-5 mr-5 h-1 w-6/7 mx-auto my-4 bg-gray-100 border-0 rounded md:my-5 light:bg-gray-700"></hr>
               {nodeScore !== null && (
                 <div className="ml-5 flex space-between space-x-4">
                   <img
@@ -271,7 +271,7 @@ const HomeReccomendationCard = ({recommendation, setErrorCode}) => {
         { recommendation && 
           <RecommendationCard key={recommendation.summary.id} isFrom={false} recommendation={recommendation.summary} nodeID={recommendation.node.id} setErrorCode={setErrorCode}/>
         }
-        <div className='mt-5'>
+        <div className='m-5'>
       <Link
             key={recommendation?.node?.id}
             href={`/${recommendation?.node.isMovie===true? 'movie': 'tvShows'}/${recommendation.node.id}`}

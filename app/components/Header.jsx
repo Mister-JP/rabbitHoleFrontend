@@ -4,6 +4,8 @@ import SearchBar from "./SearchBar";
 import api from "../api/LocalApi";
 import PopUpLoginRegister from "./PopUpLoginRegister";
 import { useState, useEffect } from "react";
+import NavBar from "./NavBar";
+
 
 const Header = () => {
   const [errorCode, setErrorCode] = useState(0);
@@ -71,13 +73,13 @@ const Header = () => {
 
   return (
     <>
-    {errorCode===401 && <PopUpLoginRegister formP={formType} setErrorCode={setErrorCode}/>}
-    <div className="m-5 ml-5 mr-5 mx-auto flex space-between items-center">
+    {false && errorCode===401 && <PopUpLoginRegister formP={formType} setErrorCode={setErrorCode}/>}
+    {false && <div className="m-5 ml-5 mr-5 mx-auto flex space-between items-center">
       <h1 className="font-plusJakarta text-2xl md:text-3xl font-semibold">
         <Link href="/" className="hover:text-gray-300 transition duration-200">RabbitHole</Link>
       </h1>
       <SearchBar handleSearchClick={handleSearchClick}/>
-      <nav className="flex space-x-6 items-center">
+      {/* <nav className="flex space-x-6 items-center">
       <Link href="/" className="py-2 px-4 rounded hover:bg-black hover:text-white transition duration-200 h-full text-center">Home</Link>
       <Link href="/popular" className="py-2 px-4 rounded hover:bg-black hover:text-white transition duration-200">Popular</Link>
       <Link href="/topRated" className="py-2 px-4 rounded hover:bg-black hover:text-white transition duration-200">Top Rated</Link>
@@ -100,9 +102,35 @@ const Header = () => {
             </>
           )}
         </div>
-      </nav>
-    </div>
+      </nav> */}
+      <NavBar
+        userEmail={userEmail}
+        handleButtonClick={handleButtonClick}
+        handleLogout={handleLogout}
+        showLogout={showLogout}
+        setShowLogout={setShowLogout}
+      />
+    </div>}
+    <>
+    {errorCode===401 && <PopUpLoginRegister formP={formType} setErrorCode={setErrorCode}/>}
+      <div className="m-5 ml-5 mr-5 mx-auto">
+        <div className="flex flex-row justify-between items-center md:mb-0">
+          <h1 className="font-plusJakarta text-2xl md:text-3xl font-semibold">
+            <Link href="/" className="hover:text-gray-300 transition duration-200">RabbitHole</Link>
+          </h1>
+          <NavBar
+            userEmail={userEmail}
+            handleButtonClick={handleButtonClick}
+            handleLogout={handleLogout}
+            showLogout={showLogout}
+            setShowLogout={setShowLogout}
+          />
+        </div>
+        <SearchBar handleSearchClick={handleSearchClick} />
+      </div>
     </>
+    </>
+
   );
 }
 

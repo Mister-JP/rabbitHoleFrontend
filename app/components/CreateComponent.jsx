@@ -20,7 +20,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
         const token = localStorage.getItem("token");
         if(type==='summary'){
           
-          const response = await axios.get('http://localhost:8000/getSummaryFromUserAndNode', {
+          const response = await axios.get('https://jignasu.pythonanywhere.com/getSummaryFromUserAndNode', {
                 params: {
                     nodeID: nodeID
                 },
@@ -59,7 +59,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
           
           const token = localStorage.getItem("token");
           const response = await axios.post(
-            "http://localhost:8000/createSummary",
+            "https://jignasu.pythonanywhere.com/createSummary",
             {
               content: summary,
               links,
@@ -88,7 +88,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
         
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:8000/createComment",
+          "https://jignasu.pythonanywhere.com/createComment",
           {
             content,
             links,
@@ -115,7 +115,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
       
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:8000/createComment",
+        "https://jignasu.pythonanywhere.com/createComment",
         {
           content,
           links,
@@ -142,7 +142,7 @@ const CreateComponent = ({type, nodeID, summaryID, commentID, pathID, fetchSumma
       
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:8000/createPath",
+        "https://jignasu.pythonanywhere.com/createPath",
         {
           links,
           nodeID

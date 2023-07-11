@@ -150,7 +150,7 @@ export default function Home() {
       if(feed === 'recommendation'){
         try {
           const response = await axios.get(
-            "http://localhost:8000/recHome",
+            "https://jignasu.pythonanywhere.com/recHome",
             {
               params: params,
               headers: {
@@ -170,7 +170,7 @@ export default function Home() {
       else if(feed==="comments"){
         try {
           const response = await axios.get(
-            "http://localhost:8000/comHome",
+            "https://jignasu.pythonanywhere.com/comHome",
             {
               params: params,
               headers: {
