@@ -1,6 +1,7 @@
 'use client';
 import './globals.css'
 import Header from "./components/Header"
+import { Analytics } from '@vercel/analytics/react';
 
 // export const metadata = {
 //   title: 'RabbitHole',
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
         <Header/>
         <main>
           {children}
+          <Analytics />
         </main>
       </body>
     </html>
