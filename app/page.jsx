@@ -226,7 +226,7 @@ export default function Home() {
             <div className="flex flex-col p-2 bg-transparent">
               <h1 style={{textShadow: "2px 2px #000"}} className="font-plusJakarta text-white text-2xl md:text-6xl font-semibold">Explore, Engage, Enjoy: </h1>
               <h1 style={{textShadow: "2px 2px #000"}} className="font-plusJakarta text-white text-2xl md:text-6xl font-semibold">Welcome to Your Movie Community</h1>
-              <p style={{textShadow: "2px 2px #000"}} className="mt-5 font-plusJakarta text-white text-l md:text-xl">Recommendations are made by movie lovers like you. Engage in threaded discussions, connect over suggestions, and broaden your cinematic horizons.</p>
+              <p style={{textShadow: "2px 2px #000"}} className="mt-5 font-plusJakarta text-white text-l md:text-xl">Recommendations are made strictly anonymously by movie lovers like you. Engage in threaded discussions, connect over suggestions, and broaden your cinematic horizons.</p>
               
           </div>
           <button onClick={() => handleButtonClick("register")} className="mt-5 absolute -right-40 py-2 px-4 text-6xl rounded border border-gray rounded-full font-bold hover:bg-white hover:text-black text-gray-100 drop-shadow-xl transition duration-200 h-full w-full md:w-[200px]">Sign up now!</button>
